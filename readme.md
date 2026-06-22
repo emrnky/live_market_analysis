@@ -7,7 +7,7 @@
 
 ---
 
-
+[![Website Link](https://emrnky.github.io/live_market_analysis/)
 [![Support on Gumroad](https://img.shields.io/badge/Support-Buy%20me%20a%20coffee-c9a84c?style=for-the-badge)](https://emrnky.gumroad.com/)
 
 ## Overview
