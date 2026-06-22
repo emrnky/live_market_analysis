@@ -639,12 +639,11 @@ async function loadCategories() {
 
   let cats = data
   if (error || !cats?.length) {
-    // Fallback: pull distinct source_category values from item_signals
     const { data: rows } = await sb
       .from('item_signals')
-      .select('source_category')
+      .select('category')
     if (rows?.length) {
-      const names = [...new Set(rows.map(r => r.source_category).filter(Boolean))].sort()
+      const names = [...new Set(rows.map(r => r.category).filter(Boolean))].sort()
       cats = names.map(n => ({ name: n, display_name: n, icon_url: null }))
     }
   }
@@ -694,7 +693,7 @@ async function loadItems(cat) {
   const { data, error } = await sb
     .from('item_signals')
     .select('id,name,signal,confidence,prob_buy,prob_hold,prob_sell,price,volume,sparkline_change,icon,updated_at')
-    .eq('source_category', cat.name)
+    .eq('category', cat.name)
     .order('confidence', { ascending: false })
 
   if (error) {
