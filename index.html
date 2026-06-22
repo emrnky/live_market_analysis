@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PoE2 Item Signals</title>
+  <style>
+    /* ─── Variables ─────────────────────────────────────────── */
+    :root {
+      --bg:         #0b0b13;
+      --bg-card:    #11111c;
+      --bg-tab:     #171726;
+      --border:     #242440;
+      --text:       #dddaec;
+      --text-muted: #6a6890;
+      --accent:     #c9a84c;
+      --accent-dim: #9e7c30;
+      --buy:        #22c55e;
+      --sell:       #ef4444;
+      --hold:       #f59e0b;
+      --row-even:   #13131f;
+      --row-hover:  #1c1c30;
+      --shadow:     0 8px 40px rgba(0,0,0,.7);
+      --r:          10px;
+    }
+    [data-theme="light"] {
+      --bg:         #efeefc;
+      --bg-card:    #ffffff;
+      --bg-tab:     #eae8fa;
+      --border:     #d4d2ee;
+      --text:       #1b1930;
+      --text-muted: #6868a0;
+      --accent:     #9e7c30;
+      --accent-dim: #7a5e1e;
+      --row-even:   #f7f5ff;
+      --row-hover:  #ece9ff;
+      --shadow:     0 4px 24px rgba(0,0,0,.1);
+    }
+
+    /* ─── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-size: 14px;
+      line-height: 1.5;
+      transition: background .25s, color .25s;
+    }
+
+    /* ─── Header ─────────────────────────────────────────────── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 300;
+      height: 62px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 24px;
+      box-shadow: 0 2px 20px rgba(0,0,0,.5);
+    }
+
+    .logo-area {
+      grid-column: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* todo put image here */
+    .logo-slot {
+      width: 148px;
+      height: 38px;
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 10px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      user-select: none;
+    }
+
+    .hdr-end {
+      grid-column: 3;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .theme-btn {
+      appearance: none;
+      background: var(--bg-tab);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+      font-size: 13px;
+      padding: 6px 14px;
+      transition: border-color .15s;
+    }
+    .theme-btn:hover { border-color: var(--accent); }
+
+    /* ─── Main ───────────────────────────────────────────────── */
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 32px 24px 0;
+    }
+
+    /* ─── Tabs ───────────────────────────────────────────────── */
+    .tabs-scroll {
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .tabs {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      border-bottom: 2px solid var(--border);
+      min-width: max-content;
+    }
+
+    .tab {
+      appearance: none;
+      background: transparent;
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 9px 14px 11px;
+      position: relative;
+      bottom: -2px;
+      white-space: nowrap;
+      transition: color .12s, background .12s;
+    }
+    .tab:hover { color: var(--text); background: var(--bg-tab); }
+    .tab.active {
+      background: var(--bg-card);
+      border-color: var(--border);
+      border-bottom-color: var(--bg-card);
+      color: var(--accent);
+    }
+
+    .tab-img {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+      image-rendering: pixelated;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .tab-img-ph {
+      width: 22px;
+      height: 22px;
+      background: var(--border);
+      border-radius: 3px;
+      flex-shrink: 0;
+      display: none;
+    }
+
+    /* ─── Table card ─────────────────────────────────────────── */
+    .tcard {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 var(--r) var(--r);
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+
+    .tmeta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-muted);
+      gap: 12px;
+    }
+    .tmeta-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .tmeta strong { color: var(--text); font-weight: 600; }
+
+    /* Signal filter pills */
+    .sig-filter {
+      display: flex;
+      gap: 5px;
+    }
+    .sig-pill {
+      appearance: none;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      transition: all .12s;
+    }
+    .sig-pill:hover, .sig-pill.on { border-color: currentColor; }
+    .sig-pill-buy  { color: var(--buy); }
+    .sig-pill-sell { color: var(--sell); }
+    .sig-pill-hold { color: var(--hold); }
+    .sig-pill.on { background: rgba(255,255,255,.06); }
+
+    .twrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    thead th {
+      background: var(--bg-tab);
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .07em;
+      padding: 10px 14px;
+      text-align: left;
+      text-transform: uppercase;
+      user-select: none;
+      white-space: nowrap;
+    }
+    thead th:hover { color: var(--text); }
+    thead th.sorted { color: var(--accent); }
+    thead th.sorted.asc::after  { content: " ↑"; }
+    thead th.sorted.desc::after { content: " ↓"; }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background .07s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:nth-child(even) { background: var(--row-even); }
+    tbody tr:hover { background: var(--row-hover); }
+
+    td { padding: 8px 14px; vertical-align: middle; }
+
+    /* col widths */
+    .c-img  { width: 50px; text-align: center; padding: 6px 8px; }
+    .c-name { min-width: 170px; }
+    .c-sig  { width: 88px; }
+    .c-price{ width: 140px; }
+    .c-vol  { width: 90px; }
+    .c-chg  { width: 80px; }
+    .c-conf { width: 150px; }
+
+    /* item icon */
+    .iimg {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      image-rendering: pixelated;
+      display: block;
+      margin: auto;
+    }
+    .iimg-ph {
+      width: 38px;
+      height: 38px;
+      background: var(--border);
+      border-radius: 4px;
+      margin: auto;
+      opacity: .35;
+    }
+
+    /* item name */
+    .iname {
+      font-weight: 600;
+      color: var(--text);
+      max-width: 240px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
+    }
+
+    /* signal badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 11px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      position: relative;
+    }
+    .badge-BUY  { background: rgba(34,197,94,.14);  color: var(--buy);  border: 1px solid rgba(34,197,94,.3); }
+    .badge-SELL { background: rgba(239,68,68,.14);  color: var(--sell); border: 1px solid rgba(239,68,68,.3); }
+    .badge-HOLD { background: rgba(245,158,11,.14); color: var(--hold); border: 1px solid rgba(245,158,11,.3); }
+
+    /* tooltip on badge hover */
+    .badge[data-tip] { cursor: default; }
+    .badge[data-tip]:hover::after {
+      content: attr(data-tip);
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0;
+      white-space: nowrap;
+      color: var(--text);
+      z-index: 100;
+      box-shadow: var(--shadow);
+      pointer-events: none;
+    }
+
+    /* price cell */
+    .price {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .div-img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+      image-rendering: pixelated;
+      flex-shrink: 0;
+    }
+
+    /* change */
+    .pos { color: var(--buy); }
+    .neg { color: var(--sell); }
+    .neu { color: var(--text-muted); }
+
+    /* confidence */
+    .conf { display: flex; align-items: center; gap: 8px; }
+    .cbar {
+      flex: 1;
+      min-width: 50px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .cfill { height: 100%; border-radius: 2px; background: var(--accent); }
+    .cval  {
+      min-width: 36px;
+      text-align: right;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* state */
+    .srow td {
+      padding: 56px 24px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+    .spinner {
+      width: 24px; height: 24px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      margin: 0 auto 10px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .tfoot {
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 16px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* ─── CTA ────────────────────────────────────────────────── */
+    .cta {
+      display: flex;
+      justify-content: center;
+      padding: 16px 24px 56px;
+    }
+    .coffee {
+      align-items: center;
+      background: var(--accent);
+      border-radius: var(--r);
+      box-shadow: 0 4px 24px rgba(201,168,76,.28);
+      color: #0b0b13;
+      display: inline-flex;
+      font-size: 15px;
+      font-weight: 700;
+      gap: 10px;
+      padding: 14px 40px;
+      text-decoration: none;
+      transition: transform .15s, box-shadow .15s, background .15s;
+    }
+    .coffee:hover {
+      background: var(--accent-dim);
+      box-shadow: 0 8px 32px rgba(201,168,76,.38);
+      transform: translateY(-2px);
+    }
+
+    /* ─── Footer ─────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 22px 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ─── Responsive ─────────────────────────────────────────── */
+    @media (max-width: 680px) {
+      main     { padding: 16px 12px 0; }
+      header   { padding: 0 12px; }
+      .logo-slot { width: 100px; }
+      .c-vol, .c-chg { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ HEADER ════════════════════════════════════════════════════════════════ -->
+<header>
+  <div></div>
+  <div class="logo-area">
+    <!-- todo put image here -->
+    <div class="logo-slot">LOGO</div>
+  </div>
+  <div class="hdr-end">
+    <button class="theme-btn" id="themeBtn">
+      <span id="themeIcon">☀️</span>
+      <span id="themeLabel">Light</span>
+    </button>
+  </div>
+</header>
+
+<!-- ══ MAIN ══════════════════════════════════════════════════════════════════ -->
+<main>
+  <!-- Category tabs -->
+  <div class="tabs-scroll">
+    <div class="tabs" id="tabs">
+      <div style="color:var(--text-muted);padding:10px 16px;font-size:13px">
+        <div class="spinner" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin:0 8px 0 0"></div>
+        Loading categories…
+      </div>
+    </div>
+  </div>
+
+  <!-- Items panel -->
+  <div class="tcard">
+    <div class="tmeta" id="tmeta">
+      <div class="tmeta-left">
+        <span id="tmetaTitle">Select a category above</span>
+        <div class="sig-filter" id="sigFilter" style="display:none">
+          <button class="sig-pill sig-pill-buy  on" data-sig="BUY" >BUY</button>
+          <button class="sig-pill sig-pill-sell on" data-sig="SELL">SELL</button>
+          <button class="sig-pill sig-pill-hold on" data-sig="HOLD">HOLD</button>
+        </div>
+      </div>
+      <span id="tmetaTs"></span>
+    </div>
+
+    <div class="twrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="c-img"></th>
+            <th class="c-name" data-col="name">Item</th>
+            <th class="c-sig"  data-col="signal">Signal</th>
+            <th class="c-price" data-col="price">Price</th>
+            <th class="c-vol"  data-col="volume">Volume</th>
+            <th class="c-chg"  data-col="sparkline_change">7d&thinsp;%</th>
+            <th class="c-conf" data-col="confidence">Confidence</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr class="srow">
+            <td colspan="7">
+              <div class="spinner"></div>
+              <div>Loading…</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tfoot" id="tfoot">
+      <span>Live signals · refreshed on each prediction cycle</span>
+      <span id="tfootCount"></span>
+    </div>
+  </div>
+</main>
+
+<!-- ══ BUY US A COFFEE ═══════════════════════════════════════════════════════ -->
+<div class="cta">
+  <a href="https://emrnky.gumroad.com/" target="_blank" rel="noopener" class="coffee">
+    ☕ Buy us a coffee
+  </a>
+</div>
+
+<!-- ══ FOOTER ════════════════════════════════════════════════════════════════ -->
+<footer>
+  <p>
+    This tool is not affiliated with or endorsed by Grinding Gear Games.<br>
+    Built by the community, for the community.
+  </p>
+</footer>
+
+<!-- ══ SCRIPTS ═══════════════════════════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+
+const SUPABASE_URL  = "https://lgjvdjoonugobiuxrdum.supabase.co"
+const SUPABASE_ANON = "sb_publishable_GZ09GVQs4Gv6RtT8jj2rAQ_BGhzFH2D"
+const IMG_BASE      = `${SUPABASE_URL}/storage/v1/object/public/images`
+const DIVINE_URL    = `${IMG_BASE}/items/Currency/Divine_Orb.png`
+
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON)
+
+let allItems   = []      // full result for active tab
+let sigFilter  = new Set(['BUY', 'SELL', 'HOLD'])
+let sortCol    = 'confidence'
+let sortAsc    = false
+
+const html       = document.documentElement
+const themeBtn   = document.getElementById('themeBtn')
+const themeIcon  = document.getElementById('themeIcon')
+const themeLabel = document.getElementById('themeLabel')
+
+function applyTheme(t) {
+  html.dataset.theme    = t
+  themeIcon.textContent  = t === 'dark' ? '☀️' : '🌙'
+  themeLabel.textContent = t === 'dark' ? 'Light' : 'Dark'
+  localStorage.setItem('poe2-theme', t)
+}
+applyTheme(localStorage.getItem('poe2-theme') || 'dark')
+themeBtn.addEventListener('click', () =>
+  applyTheme(html.dataset.theme === 'dark' ? 'light' : 'dark'))
+
+// ── Signal filter pills ─────────────────────────────────────────────────────────
+document.querySelectorAll('.sig-pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const sig = btn.dataset.sig
+    if (sigFilter.has(sig)) {
+      if (sigFilter.size === 1) return  // keep at least one
+      sigFilter.delete(sig)
+      btn.classList.remove('on')
+    } else {
+      sigFilter.add(sig)
+      btn.classList.add('on')
+    }
+    renderTable()
+  })
+})
+
+// ── Helpers ─────────────────────────────────────────────────────────────────────
+function fmt(v, dec = 2) {
+  if (v == null || isNaN(v)) return '—'
+  return Number(v).toLocaleString('en', { minimumFractionDigits: dec, maximumFractionDigits: dec })
+}
+
+function fmtPrice(v) {
+  if (v == null || isNaN(v)) return '—'
+  const n = Number(v)
+  if (n === 0)     return '0'
+  if (n < 0.001)   return n.toFixed(6)
+  if (n < 0.01)    return n.toFixed(4)
+  if (n < 1)       return n.toFixed(3)
+  return n.toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+}
+
+function fmtChg(v) {
+  if (v == null || isNaN(v)) return '<span class="neu">—</span>'
+  const n   = Number(v)
+  const cls = n > 0.5 ? 'pos' : n < -0.5 ? 'neg' : 'neu'
+  const arr = n > 0.5 ? '↑' : n < -0.5 ? '↓' : '→'
+  return `<span class="${cls}">${arr}&thinsp;${Math.abs(n).toFixed(1)}%</span>`
+}
+
+function pct(v) { return v != null ? `${(Number(v) * 100).toFixed(0)}%` : '—' }
+
+function itemIcon(icon) {
+  if (!icon) return null
+  const s = String(icon)
+  return s.startsWith('/') ? `https://web.poecdn.com${s}` : s
+}
+
+function catIcon(cat) {
+  return cat.icon_url || `${IMG_BASE}/categories/${encodeURIComponent(cat.name)}.png`
+}
+
+// ── Tabs ─────────────────────────────────────────────────────────────────────────
+async function loadCategories() {
+  const { data, error } = await sb
+    .from('categories')
+    .select('name, display_name, icon_url')
+    .order('name')
+
+  const tabsEl = document.getElementById('tabs')
+
+  let cats = data
+  if (error || !cats?.length) {
+    // Fallback: pull distinct source_category values from item_signals
+    const { data: rows } = await sb
+      .from('item_signals')
+      .select('source_category')
+    if (rows?.length) {
+      const names = [...new Set(rows.map(r => r.source_category).filter(Boolean))].sort()
+      cats = names.map(n => ({ name: n, display_name: n, icon_url: null }))
+    }
+  }
+
+  if (!cats?.length) {
+    tabsEl.innerHTML = '<div style="padding:10px 16px;color:var(--text-muted);font-size:13px">No categories found.</div>'
+    document.getElementById('tbody').innerHTML =
+      '<tr class="srow"><td colspan="7">No data available yet. Run predict_db.py first.</td></tr>'
+    return
+  }
+
+  tabsEl.innerHTML = ''
+  cats.forEach((cat, i) => {
+    const btn = document.createElement('button')
+    btn.className    = 'tab' + (i === 0 ? ' active' : '')
+    btn.dataset.name = cat.name
+    const label      = cat.display_name || cat.name
+    const iconSrc    = catIcon(cat)
+
+    btn.innerHTML = `
+      <img class="tab-img" src="${iconSrc}" alt="${label}"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="tab-img-ph"></span>
+      <span>${label}</span>`
+
+    btn.addEventListener('click', () => selectTab(cat))
+    tabsEl.appendChild(btn)
+  })
+
+  selectTab(cats[0])
+}
+
+function selectTab(cat) {
+  document.querySelectorAll('.tab').forEach(t =>
+    t.classList.toggle('active', t.dataset.name === cat.name))
+  loadItems(cat)
+}
+
+// ── Load items ────────────────────────────────────────────────────────────────────
+async function loadItems(cat) {
+  const tbody = document.getElementById('tbody')
+  tbody.innerHTML = '<tr class="srow"><td colspan="7"><div class="spinner"></div><div>Loading…</div></td></tr>'
+  document.getElementById('tmetaTitle').textContent = `Loading ${cat.display_name || cat.name}…`
+  document.getElementById('sigFilter').style.display = 'none'
+  document.getElementById('tmetaTs').textContent = ''
+
+  const { data, error } = await sb
+    .from('item_signals')
+    .select('id,name,signal,confidence,prob_buy,prob_hold,prob_sell,price,volume,sparkline_change,icon,updated_at')
+    .eq('source_category', cat.name)
+    .order('confidence', { ascending: false })
+
+  if (error) {
+    tbody.innerHTML = `<tr class="srow"><td colspan="7">Error: ${error.message}</td></tr>`
+    return
+  }
+
+  allItems = data || []
+  sortCol  = 'confidence'
+  sortAsc  = false
+
+  const label = cat.display_name || cat.name
+  document.getElementById('tmetaTitle').innerHTML =
+    `<strong>${label}</strong> · ${allItems.length.toLocaleString()} items`
+  document.getElementById('sigFilter').style.display = 'flex'
+
+  if (allItems.length) {
+    const ts = new Date(allItems[0].updated_at)
+    document.getElementById('tmetaTs').textContent =
+      `Updated ${ts.toLocaleDateString('en', {month:'short',day:'numeric'})} ` +
+      ts.toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'})
+  }
+
+  renderTable()
+}
+
+// ── Render ─────────────────────────────────────────────────────────────────────────
+function renderTable() {
+  const visible = allItems.filter(it => sigFilter.has(it.signal))
+  const sorted  = [...visible].sort((a, b) => {
+    let va = a[sortCol], vb = b[sortCol]
+    if (va == null) va = sortAsc ?  Infinity : -Infinity
+    if (vb == null) vb = sortAsc ?  Infinity : -Infinity
+    if (typeof va === 'string') return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va)
+    return sortAsc ? va - vb : vb - va
+  })
+
+  // sort indicators
+  document.querySelectorAll('thead th[data-col]').forEach(th => {
+    th.classList.remove('sorted', 'asc', 'desc')
+    if (th.dataset.col === sortCol)
+      th.classList.add('sorted', sortAsc ? 'asc' : 'desc')
+  })
+
+  document.getElementById('tfootCount').textContent =
+    visible.length !== allItems.length
+      ? `Showing ${visible.length.toLocaleString()} of ${allItems.length.toLocaleString()}`
+      : `${allItems.length.toLocaleString()} items`
+
+  const tbody = document.getElementById('tbody')
+  if (!sorted.length) {
+    tbody.innerHTML = '<tr class="srow"><td colspan="7">No items match the current filter.</td></tr>'
+    return
+  }
+
+  tbody.innerHTML = sorted.map(item => {
+    const iconUrl = itemIcon(item.icon)
+    const tip     = `B ${pct(item.prob_buy)} · H ${pct(item.prob_hold)} · S ${pct(item.prob_sell)}`
+    const conf    = ((item.confidence || 0) * 100)
+
+    return `<tr>
+      <td class="c-img">
+        ${iconUrl
+          ? `<img class="iimg" src="${iconUrl}" alt="${esc(item.name)}" loading="lazy"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='block'">`
+          : ''}
+        <div class="iimg-ph"${iconUrl ? ' style="display:none"' : ''}></div>
+      </td>
+      <td class="c-name">
+        <span class="iname" title="${esc(item.name)}">${esc(item.name)}</span>
+      </td>
+      <td class="c-sig">
+        <span class="badge badge-${item.signal}" data-tip="${tip}">${item.signal}</span>
+      </td>
+      <td class="c-price">
+        <div class="price">
+          <img class="div-img" src="${DIVINE_URL}" alt="div"
+            onerror="this.style.display='none'">
+          <span>${fmtPrice(item.price)}</span>
+        </div>
+      </td>
+      <td class="c-vol">${fmt(item.volume, 0)}</td>
+      <td class="c-chg">${fmtChg(item.sparkline_change)}</td>
+      <td class="c-conf">
+        <div class="conf">
+          <div class="cbar"><div class="cfill" style="width:${conf.toFixed(1)}%"></div></div>
+          <span class="cval">${conf.toFixed(0)}%</span>
+        </div>
+      </td>
+    </tr>`
+  }).join('')
+}
+
+function esc(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+// ── Column sort ─────────────────────────────────────────────────────────────────────
+document.querySelectorAll('thead th[data-col]').forEach(th => {
+  th.addEventListener('click', () => {
+    if (sortCol === th.dataset.col) sortAsc = !sortAsc
+    else { sortCol = th.dataset.col; sortAsc = false }
+    renderTable()
+  })
+})
+
+// ── Boot ─────────────────────────────────────────────────────────────────────────────
+loadCategories()
+</script>
+</body>
+</html>
