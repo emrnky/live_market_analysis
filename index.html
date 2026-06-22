@@ -94,7 +94,9 @@
     .hdr-end {
       grid-column: 3;
       display: flex;
+      align-items: center;
       justify-content: flex-end;
+      gap: 10px;
     }
 
     .theme-btn {
@@ -123,46 +125,62 @@
       padding: 32px 24px 0;
     }
 
-    /* ─── Tabs ───────────────────────────────────────────────── */
-    .tabs-scroll {
-      overflow-x: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border) transparent;
+    /* ─── Layout ────────────────────────────────────────────── */
+    .layout {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding-bottom: 48px;
     }
 
-    .tabs {
-      display: flex;
-      align-items: flex-end;
-      gap: 3px;
-      border-bottom: 2px solid var(--border);
-      min-width: max-content;
+    .sidebar {
+      width: 210px;
+      flex-shrink: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow-y: auto;
+      max-height: calc(100vh - 90px);
+      position: sticky;
+      top: 78px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) var(--bg-tab);
     }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    .content { flex: 1; min-width: 0; }
+
+    /* ─── Sidebar category list ──────────────────────────────── */
+    .tabs { display: flex; flex-direction: column; }
 
     .tab {
       appearance: none;
       background: transparent;
-      border: 1px solid transparent;
-      border-bottom: none;
-      border-radius: 8px 8px 0 0;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      border-left: 3px solid transparent;
+      border-radius: 0;
       color: var(--text-muted);
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
       font-family: inherit;
       font-size: 13px;
       font-weight: 500;
-      padding: 9px 14px 11px;
-      position: relative;
-      bottom: -2px;
-      white-space: nowrap;
-      transition: color .12s, background .12s;
+      padding: 9px 12px;
+      text-align: left;
+      width: 100%;
+      transition: color .12s, background .12s, border-left-color .12s;
     }
-    .tab:hover { color: var(--text); background: var(--bg-tab); }
+    .tab:first-child { border-radius: var(--r) var(--r) 0 0; }
+    .tab:last-child  { border-bottom: none; border-radius: 0 0 var(--r) var(--r); }
+    .tab:hover { color: var(--text); background: var(--row-hover); }
     .tab.active {
-      background: var(--bg-card);
-      border-color: var(--border);
-      border-bottom-color: var(--bg-card);
+      background: var(--bg-tab);
+      border-left-color: var(--accent);
       color: var(--accent);
     }
 
@@ -187,10 +205,8 @@
     .tcard {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-top: none;
-      border-radius: 0 0 var(--r) var(--r);
+      border-radius: var(--r);
       overflow: hidden;
-      margin-bottom: 40px;
     }
 
     .tmeta {
@@ -408,31 +424,23 @@
       color: var(--text-muted);
     }
 
-    /* ─── CTA ────────────────────────────────────────────────── */
-    .cta {
+    /* ─── Coffee button (header) ─────────────────────────────── */
+    .coffee-hdr {
       display: flex;
-      justify-content: center;
-      padding: 16px 24px 56px;
-    }
-    .coffee {
       align-items: center;
+      gap: 6px;
       background: var(--accent);
-      border-radius: var(--r);
-      box-shadow: 0 4px 24px rgba(201,168,76,.28);
+      border-radius: 20px;
       color: #0b0b13;
-      display: inline-flex;
-      font-size: 15px;
+      font-family: inherit;
+      font-size: 13px;
       font-weight: 700;
-      gap: 10px;
-      padding: 14px 40px;
+      padding: 6px 14px;
       text-decoration: none;
-      transition: transform .15s, box-shadow .15s, background .15s;
+      white-space: nowrap;
+      transition: background .15s;
     }
-    .coffee:hover {
-      background: var(--accent-dim);
-      box-shadow: 0 8px 32px rgba(201,168,76,.38);
-      transform: translateY(-2px);
-    }
+    .coffee-hdr:hover { background: var(--accent-dim); }
 
     /* ─── Footer ─────────────────────────────────────────────── */
     footer {
@@ -447,10 +455,19 @@
     footer a:hover { text-decoration: underline; }
 
     /* ─── Responsive ─────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .layout    { flex-direction: column; }
+      .sidebar   { width: 100%; max-height: 180px; position: static; }
+      .tabs      { flex-direction: row; overflow-x: auto; }
+      .tab       { border-bottom: none; border-left: none; border-bottom: 3px solid transparent; flex-shrink: 0; border-radius: 0; }
+      .tab:first-child, .tab:last-child { border-radius: 0; }
+      .tab.active { border-bottom-color: var(--accent); background: var(--bg-tab); }
+    }
     @media (max-width: 680px) {
       main     { padding: 16px 12px 0; }
       header   { padding: 0 12px; }
       .logo-slot { width: 100px; }
+      .coffee-hdr span { display: none; }
       .c-vol, .c-chg { display: none; }
     }
   </style>
@@ -465,6 +482,9 @@
     <div class="logo-slot">LOGO</div>
   </div>
   <div class="hdr-end">
+    <a href="https://emrnky.gumroad.com/" target="_blank" rel="noopener" class="coffee-hdr">
+      ☕ <span>Buy me a coffee</span>
+    </a>
     <button class="theme-btn" id="themeBtn">
       <span id="themeIcon">☀️</span>
       <span id="themeLabel">Light</span>
@@ -474,17 +494,19 @@
 
 <!-- ══ MAIN ══════════════════════════════════════════════════════════════════ -->
 <main>
-  <!-- Category tabs -->
-  <div class="tabs-scroll">
+  <div class="layout">
+  <!-- Category sidebar -->
+  <aside class="sidebar">
     <div class="tabs" id="tabs">
       <div style="color:var(--text-muted);padding:10px 16px;font-size:13px">
         <div class="spinner" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin:0 8px 0 0"></div>
-        Loading categories…
+        Loading…
       </div>
     </div>
-  </div>
+  </aside>
 
   <!-- Items panel -->
+  <div class="content">
   <div class="tcard">
     <div class="tmeta" id="tmeta">
       <div class="tmeta-left">
@@ -527,14 +549,9 @@
       <span id="tfootCount"></span>
     </div>
   </div>
+  </div><!-- .content -->
+  </div><!-- .layout -->
 </main>
-
-<!-- ══ BUY US A COFFEE ═══════════════════════════════════════════════════════ -->
-<div class="cta">
-  <a href="https://emrnky.gumroad.com/" target="_blank" rel="noopener" class="coffee">
-    ☕ Buy us a coffee
-  </a>
-</div>
 
 <!-- ══ FOOTER ════════════════════════════════════════════════════════════════ -->
 <footer>
@@ -625,7 +642,7 @@ function itemIcon(icon) {
 }
 
 function catIcon(cat) {
-  return cat.icon_url || `${IMG_BASE}/categories/${encodeURIComponent(cat.name)}.png`
+  return cat.icon_url || `${IMG_BASE}/categories/${cat.name.replace(/[^a-zA-Z0-9]/g, '_')}.png`
 }
 
 // ── Tabs ─────────────────────────────────────────────────────────────────────────
@@ -757,7 +774,7 @@ function renderTable() {
     return `<tr>
       <td class="c-img">
         ${iconUrl
-          ? `<img class="iimg" src="${iconUrl}" alt="${esc(item.name)}" loading="lazy"
+          ? `<img class="iimg" src="${iconUrl}" alt="${esc(item.name)}"
                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">`
           : ''}
         <div class="iimg-ph"${iconUrl ? ' style="display:none"' : ''}></div>
