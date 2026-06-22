@@ -207,7 +207,22 @@
       border: 1px solid var(--border);
       border-radius: var(--r);
       overflow: hidden;
+      position: relative;
     }
+
+    .tcard-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+      z-index: 10;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 10px;
+      border-radius: var(--r);
+    }
+    .tcard-overlay.visible { display: flex; }
 
     .tmeta {
       display: flex;
@@ -508,6 +523,10 @@
   <!-- Items panel -->
   <div class="content">
   <div class="tcard">
+    <div class="tcard-overlay" id="tcardOverlay">
+      <div class="spinner"></div>
+      <div style="font-size:13px;color:var(--text-muted)">Loading…</div>
+    </div>
     <div class="tmeta" id="tmeta">
       <div class="tmeta-left">
         <span id="tmetaTitle">Select a category above</span>
@@ -701,8 +720,9 @@ function selectTab(cat) {
 
 // ── Load items ────────────────────────────────────────────────────────────────────
 async function loadItems(cat) {
-  const tbody = document.getElementById('tbody')
-  tbody.innerHTML = '<tr class="srow"><td colspan="7"><div class="spinner"></div><div>Loading…</div></td></tr>'
+  const tbody   = document.getElementById('tbody')
+  const overlay = document.getElementById('tcardOverlay')
+  overlay.classList.add('visible')
   document.getElementById('tmetaTitle').textContent = `Loading ${cat.display_name || cat.name}…`
   document.getElementById('sigFilter').style.display = 'none'
   document.getElementById('tmetaTs').textContent = ''
@@ -712,6 +732,8 @@ async function loadItems(cat) {
     .select('id,name,signal,confidence,prob_buy,prob_hold,prob_sell,price,volume,sparkline_change,icon,updated_at')
     .eq('category', cat.name)
     .order('confidence', { ascending: false })
+
+  overlay.classList.remove('visible')
 
   if (error) {
     tbody.innerHTML = `<tr class="srow"><td colspan="7">Error: ${error.message}</td></tr>`
