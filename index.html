@@ -666,30 +666,35 @@ function catIcon(cat) {
 
 // ── Tabs ─────────────────────────────────────────────────────────────────────────
 async function loadCategories() {
-  const { data, error } = await sb
-    .from('categories')
-    .select('name, display_name, icon_url')
-    .order('name')
-
   const tabsEl = document.getElementById('tabs')
 
-  let cats = data
-  if (error || !cats?.length) {
-    const { data: rows } = await sb
+  // Always derive categories from item_signals (source of truth after remapping)
+  const seen = new Set()
+  let offset = 0
+  while (true) {
+    const { data, error } = await sb
       .from('item_signals')
       .select('category')
-    if (rows?.length) {
-      const names = [...new Set(rows.map(r => r.category).filter(Boolean))].sort()
-      cats = names.map(n => ({ name: n, display_name: n, icon_url: null }))
-    }
+      .range(offset, offset + 999)
+    if (error || !data?.length) break
+    data.forEach(r => r.category && seen.add(r.category))
+    if (data.length < 1000) break
+    offset += 1000
   }
 
-  if (!cats?.length) {
+  if (!seen.size) {
     tabsEl.innerHTML = '<div style="padding:10px 16px;color:var(--text-muted);font-size:13px">No categories found.</div>'
     document.getElementById('tbody').innerHTML =
       '<tr class="srow"><td colspan="7">No data available yet.</td></tr>'
     return
   }
+
+  // Optionally enrich with icons from categories table
+  const iconMap = {}
+  const { data: catRows } = await sb.from('categories').select('name, icon_url')
+  if (catRows?.length) catRows.forEach(r => { if (r.icon_url) iconMap[r.name] = r.icon_url })
+
+  const cats = [...seen].sort().map(n => ({ name: n, display_name: n, icon_url: iconMap[n] || null }))
 
   tabsEl.innerHTML = ''
   cats.forEach((cat, i) => {
