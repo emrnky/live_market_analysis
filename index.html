@@ -652,7 +652,7 @@ async function loadCategories() {
   if (!cats?.length) {
     tabsEl.innerHTML = '<div style="padding:10px 16px;color:var(--text-muted);font-size:13px">No categories found.</div>'
     document.getElementById('tbody').innerHTML =
-      '<tr class="srow"><td colspan="7">No data available yet. Run predict_db.py first.</td></tr>'
+      '<tr class="srow"><td colspan="7">No data available yet.</td></tr>'
     return
   }
 
