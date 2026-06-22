@@ -6,8 +6,17 @@
 </div>
 
 ---
+<div align="center">
+  <a href="https://emrnky.github.io/live_market_analysis/">
+    <img src="https://i.giphy.com/xS02DRItBt7aM.webp" alt="Website Link" width="500" height="300" valign="center" />
+    <p>
+    Visit the website
+    </p>
+  </a>
+</div>
 
-[![Website Link]<img src="icon.svg" alt="PoE Market Signal icon" width="16" height="16" />](https://emrnky.github.io/live_market_analysis/)
+---
+
 [![Support on Gumroad](https://img.shields.io/badge/Support-Buy%20me%20a%20coffee-c9a84c?style=for-the-badge)](https://emrnky.gumroad.com/)
 
 ## Overview
