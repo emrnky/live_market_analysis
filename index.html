@@ -3,7 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PoE2 Item Signals</title>
+
+  <title>PoE Market Signal — Path of Exile 2 Market Signals &amp; Trade Predictions</title>
+  <meta name="description" content="PoE Market Signal uses a machine learning model to read Path of Exile 2 market data and surface buy, sell, and hold signals so you can find the best trade opportunities before everyone else. Built by the community, for the community — not affiliated with Grinding Gear Games. Tables refresh every 24 hours." />
+  <meta name="keywords" content="PoE2, Path of Exile 2, market signal, trade snipe, PoE2 prices, PoE2 trading, PoE2 flipping, PoE2 economy" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://poemarketsignal.com/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="PoE Market Signal — Path of Exile 2 Market Signals" />
+  <meta property="og:description" content="Machine-learning-driven buy/sell/hold signals for Path of Exile 2 trading. Find the best flips before the market catches up." />
+  <meta property="og:url" content="https://poemarketsignal.com/" />
+  <meta property="og:image" content="/og-cover.png" />
+
+  <!-- Twitter card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="PoE Market Signal — Path of Exile 2 Market Signals" />
+  <meta name="twitter:description" content="Machine-learning-driven buy/sell/hold signals for Path of Exile 2 trading." />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/icon.svg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
     /* ─── Variables ─────────────────────────────────────────── */
     :root {
@@ -13,7 +38,7 @@
       --border:     #242440;
       --text:       #dddaec;
       --text-muted: #6a6890;
-      --accent:     #c9a84c;
+      --accent: #e0c982; 
       --accent-dim: #9e7c30;
       --buy:        #22c55e;
       --sell:       #ef4444;
@@ -22,19 +47,24 @@
       --row-hover:  #1c1c30;
       --shadow:     0 8px 40px rgba(0,0,0,.7);
       --r:          10px;
+      --font-display: 'Sora', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     [data-theme="light"] {
-      --bg:         #efeefc;
+      --bg:         #f3f1fb;
       --bg-card:    #ffffff;
-      --bg-tab:     #eae8fa;
-      --border:     #d4d2ee;
-      --text:       #1b1930;
-      --text-muted: #6868a0;
-      --accent:     #9e7c30;
-      --accent-dim: #7a5e1e;
-      --row-even:   #f7f5ff;
-      --row-hover:  #ece9ff;
-      --shadow:     0 4px 24px rgba(0,0,0,.1);
+      --bg-tab:     #ede9fb;
+      --border:     #d7d2ee;
+      --text:       #211d3a;
+      --text-muted: #5c5780;
+      --accent:     #c9a84c;
+      --accent-dim: #6b4600;
+      --buy:        #15803d;
+      --sell:       #c0282d;
+      --hold:       #a35a00;
+      --row-even:   #f8f6ff;
+      --row-hover:  #ece6ff;
+      --shadow:     0 4px 24px rgba(40,30,80,.10);
     }
 
     /* ─── Reset ─────────────────────────────────────────────── */
@@ -42,7 +72,7 @@
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: var(--font-body);
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
@@ -51,6 +81,11 @@
       font-size: 14px;
       line-height: 1.5;
       transition: background .25s, color .25s;
+    }
+
+    /* ─── Mobile coffee banner (hidden on desktop) ──────────── */
+    .coffee-mobile {
+      display: none;
     }
 
     /* ─── Header ─────────────────────────────────────────────── */
@@ -67,29 +102,34 @@
       padding: 0 24px;
       box-shadow: 0 2px 20px rgba(0,0,0,.5);
     }
+    [data-theme="light"] header { box-shadow: 0 2px 14px rgba(40,30,80,.07); }
 
     .logo-area {
       grid-column: 2;
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 9px;
+      white-space: nowrap;
     }
 
-    /* todo put image here */
-    .logo-slot {
-      width: 148px;
-      height: 38px;
-      border: 1px dashed var(--border);
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      font-size: 10px;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      user-select: none;
+    .logo-icon {
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
     }
+    .logo-icon .ring   { fill: none; stroke: var(--accent); }
+    .logo-icon .bull   { fill: var(--accent); opacity: .2; }
+    .logo-icon .dot    { fill: var(--accent); }
+
+    .logo-text {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 17px;
+      letter-spacing: .01em;
+      color: var(--text);
+    }
+    .logo-text .logo-accent { color: var(--accent); }
 
     .hdr-end {
       grid-column: 3;
@@ -125,6 +165,27 @@
       padding: 32px 24px 0;
     }
 
+    /* ─── Intro / SEO copy ───────────────────────────────────── */
+    .intro {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 18px 22px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    .intro strong { color: var(--text); }
+    .intro h1 {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: -.01em;
+    }
+
     /* ─── Layout ────────────────────────────────────────────── */
     .layout {
       display: flex;
@@ -149,6 +210,10 @@
     .sidebar::-webkit-scrollbar { width: 4px; }
     .sidebar::-webkit-scrollbar-track { background: transparent; }
     .sidebar::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    .sidebar-head {
+      display: none;
+    }
 
     .content { flex: 1; min-width: 0; }
 
@@ -222,6 +287,7 @@
       gap: 10px;
       border-radius: var(--r);
     }
+    [data-theme="light"] .tcard-overlay { background: rgba(245,243,255,.7); }
     .tcard-overlay.visible { display: flex; }
 
     .tmeta {
@@ -260,6 +326,7 @@
     .sig-pill-sell { color: var(--sell); }
     .sig-pill-hold { color: var(--hold); }
     .sig-pill.on { background: rgba(255,255,255,.06); }
+    [data-theme="light"] .sig-pill.on { background: rgba(0,0,0,.04); }
 
     .twrap { overflow-x: auto; }
 
@@ -282,11 +349,38 @@
       text-transform: uppercase;
       user-select: none;
       white-space: nowrap;
+      position: relative;
     }
     thead th:hover { color: var(--text); }
     thead th.sorted { color: var(--accent); }
     thead th.sorted.asc::after  { content: " ↑"; }
     thead th.sorted.desc::after { content: " ↓"; }
+
+    /* header tooltip */
+    .th-tip { cursor: help; }
+    .th-tip:hover .th-tip-bubble { display: block; }
+    .th-tip-bubble {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-transform: none;
+      white-space: normal;
+      width: 190px;
+      max-width: calc(100vw - 32px);
+      color: var(--text);
+      z-index: 100;
+      box-shadow: var(--shadow);
+      cursor: default;
+    }
+    .c-sig .th-tip-bubble, .c-name .th-tip-bubble { right: auto; left: 14px; }
 
     tbody tr {
       border-bottom: 1px solid var(--border);
@@ -306,6 +400,15 @@
     .c-vol  { width: 90px; }
     .c-chg  { width: 80px; }
     .c-conf { width: 150px; }
+
+    /* item link wrapper */
+    .ilink {
+      display: contents;
+    }
+    .iimg-link, .iname-link {
+      text-decoration: none;
+      color: inherit;
+    }
 
     /* item icon */
     .iimg {
@@ -334,7 +437,9 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       display: block;
+      transition: color .12s;
     }
+    .iname-link:hover .iname { color: var(--accent); text-decoration: underline; }
 
     /* signal badge */
     .badge {
@@ -439,8 +544,11 @@
       color: var(--text-muted);
     }
 
-    /* ─── Coffee button (header) ─────────────────────────────── */
+    /* ─── Coffee button (header, animated border) ───────────── */
     .coffee-hdr {
+      --coffee-border: conic-gradient(from var(--coffee-angle),
+        var(--accent), #fff6d8, var(--accent), var(--accent-dim), var(--accent));
+      position: relative;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -453,9 +561,82 @@
       padding: 6px 14px;
       text-decoration: none;
       white-space: nowrap;
+      isolation: isolate;
+    }
+    .coffee-hdr::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 22px;
+      background: var(--coffee-border);
+      z-index: -1;
+      animation: coffee-spin 3.5s linear infinite;
+    }
+    .coffee-hdr::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      background: var(--accent);
+      z-index: -1;
       transition: background .15s;
     }
-    .coffee-hdr:hover { background: var(--accent-dim); }
+    .coffee-hdr:hover::after { background: var(--accent-dim); }
+    .coffee-hdr span, .coffee-hdr .coffee-icon { position: relative; z-index: 1; }
+
+    @property --coffee-angle {
+      syntax: '<angle>';
+      inherits: false;
+      initial-value: 0deg;
+    }
+    @keyframes coffee-spin {
+      to { --coffee-angle: 360deg; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .coffee-hdr::before { animation: none; }
+    }
+
+    .coffee-mobile .coffee-hdr {
+      width: 100%;
+      justify-content: center;
+      padding: 11px 14px;
+      font-size: 14px;
+    }
+
+    /* ─── Hamburger (mobile categories) ─────────────────────── */
+    .hamburger-btn {
+      display: none;
+      appearance: none;
+      background: var(--bg-tab);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      color: var(--text);
+      cursor: pointer;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 11px 14px;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .hamburger-btn .bars {
+      width: 18px; height: 13px;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .hamburger-btn .bars span {
+      position: absolute;
+      left: 0; right: 0;
+      height: 2px;
+      background: var(--text);
+      border-radius: 1px;
+    }
+    .hamburger-btn .bars span:nth-child(1) { top: 0; }
+    .hamburger-btn .bars span:nth-child(2) { top: 5.5px; }
+    .hamburger-btn .bars span:nth-child(3) { top: 11px; }
 
     /* ─── Footer ─────────────────────────────────────────────── */
     footer {
@@ -472,33 +653,58 @@
     /* ─── Responsive ─────────────────────────────────────────── */
     @media (max-width: 900px) {
       .layout    { flex-direction: column; }
-      .sidebar   { width: 100%; max-height: 180px; position: static; }
-      .tabs      { flex-direction: row; overflow-x: auto; }
-      .tab       { border-bottom: none; border-left: none; border-bottom: 3px solid transparent; flex-shrink: 0; border-radius: 0; }
-      .tab:first-child, .tab:last-child { border-radius: 0; }
-      .tab.active { border-bottom-color: var(--accent); background: var(--bg-tab); }
+
+      .hamburger-btn { display: flex; }
+
+      .sidebar {
+        width: 100%;
+        max-height: none;
+        position: static;
+        display: none;
+        border-radius: var(--r);
+      }
+      .sidebar.open { display: block; }
+
+      .tabs { flex-direction: column; max-height: 260px; overflow-y: auto; }
+      .tab  { border-radius: 0; }
+      .tab:first-child { border-radius: var(--r) var(--r) 0 0; }
+      .tab:last-child  { border-radius: 0 0 var(--r) var(--r); }
     }
     @media (max-width: 680px) {
       main     { padding: 16px 12px 0; }
-      header   { padding: 0 12px; }
-      .logo-slot { width: 100px; }
-      .coffee-hdr span { display: none; }
+      header   { padding: 0 12px; grid-template-columns: auto 1fr auto; }
+      .logo-text { font-size: 15px; }
+      .coffee-hdr.in-header { display: none; }
+      .coffee-mobile { display: block; padding: 12px 12px 0; }
       .c-vol, .c-chg { display: none; }
     }
   </style>
 </head>
 <body>
 
+<!-- ══ MOBILE COFFEE BANNER (top of page on mobile) ════════════════════════════ -->
+<div class="coffee-mobile">
+  <a href="https://emrnky.gumroad.com/" target="_blank" rel="noopener" class="coffee-hdr">
+    <span class="coffee-icon">☕</span> <span>Support the project — buy me a coffee</span>
+  </a>
+</div>
+
 <!-- ══ HEADER ════════════════════════════════════════════════════════════════ -->
 <header>
   <div></div>
   <div class="logo-area">
-    <!-- todo put image here -->
-    <div class="logo-slot">LOGO</div>
+    <svg class="logo-icon" viewBox="0 0 64 64" aria-hidden="true">
+      <circle class="ring" cx="32" cy="32" r="29" stroke-width="4"/>
+      <circle class="ring" cx="32" cy="32" r="19" stroke-width="4"/>
+      <circle class="bull" cx="32" cy="32" r="9"/>
+      <circle class="ring" cx="32" cy="32" r="9" stroke-width="3.5"/>
+      <circle class="dot" cx="32" cy="32" r="3.6"/>
+    </svg>
+    <span class="logo-text">PoE <span class="logo-accent">Market Signal</span></span>
   </div>
   <div class="hdr-end">
-    <a href="https://emrnky.gumroad.com/" target="_blank" rel="noopener" class="coffee-hdr">
-      ☕ <span>Buy me a coffee</span>
+    <a href="https://emrnky.gumroad.com/" target="_blank" rel="noopener" class="coffee-hdr in-header">
+      <span class="coffee-icon">☕</span> <span>Buy me a coffee</span>
     </a>
     <button class="theme-btn" id="themeBtn">
       <span id="themeIcon">☀️</span>
@@ -509,9 +715,28 @@
 
 <!-- ══ MAIN ══════════════════════════════════════════════════════════════════ -->
 <main>
+
+  <!-- SEO intro block -->
+  <section class="intro">
+    <h1>PoE Market Signal — Path of Exile 2 market signals</h1>
+    <p>
+      <strong>PoE Market Signal</strong> is a website built to snipe current Path of Exile 2 market values using a machine learning model
+      that reads live trade data and predicts where the market is heading. We turn that prediction into a simple
+      <strong>buy</strong>, <strong>sell</strong>, or <strong>hold</strong> signal for thousands of items, so you can find the
+      best trade opportunities before the rest of the market catches on. PoE Market Signal is not affiliated with or endorsed by
+      Grinding Gear Games — it's built by the community, for the community. Tables currently refresh every 24 hours.
+      If this tool saves you time or currency, consider supporting the project.
+    </p>
+  </section>
+
   <div class="layout">
   <!-- Category sidebar -->
-  <aside class="sidebar">
+  <button class="hamburger-btn" id="hamburgerBtn" aria-expanded="false" aria-controls="sidebarPanel">
+    <span id="hamburgerLabel">Categories</span>
+    <span class="bars"><span></span><span></span><span></span></span>
+  </button>
+
+  <aside class="sidebar" id="sidebarPanel">
     <div class="tabs" id="tabs">
       <div style="color:var(--text-muted);padding:10px 16px;font-size:13px">
         <div class="spinner" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin:0 8px 0 0"></div>
@@ -545,11 +770,26 @@
           <tr>
             <th class="c-img"></th>
             <th class="c-name" data-col="name">Item</th>
-            <th class="c-sig"  data-col="signal">Signal</th>
-            <th class="c-price" data-col="price">Price</th>
-            <th class="c-vol"  data-col="volume">Volume</th>
-            <th class="c-chg"  data-col="sparkline_change">7d&thinsp;%</th>
-            <th class="c-conf" data-col="confidence">Confidence</th>
+            <th class="c-sig th-tip" data-col="signal">
+              Signal
+              <span class="th-tip-bubble">Our model's current call on the item: BUY, SELL, or HOLD based on predicted price movement.</span>
+            </th>
+            <th class="c-price th-tip" data-col="price">
+              Price
+              <span class="th-tip-bubble">Latest known market price, shown in Divine Orbs.</span>
+            </th>
+            <th class="c-vol th-tip" data-col="volume">
+              Volume
+              <span class="th-tip-bubble">How many listings/trades of this item were seen in the latest data pull.</span>
+            </th>
+            <th class="c-chg th-tip" data-col="sparkline_change">
+              7d&thinsp;%
+              <span class="th-tip-bubble">Price change over the last 7 days, compared to the previous period.</span>
+            </th>
+            <th class="c-conf th-tip" data-col="confidence">
+              Confidence
+              <span class="th-tip-bubble">How confident the model is in this signal — higher % means stronger agreement across its prediction probabilities.</span>
+            </th>
           </tr>
         </thead>
         <tbody id="tbody">
@@ -564,7 +804,7 @@
     </div>
 
     <div class="tfoot" id="tfoot">
-      <span>Live signals · refreshed on each prediction cycle</span>
+      <span>Live signals · refreshed every 24 hours</span>
       <span id="tfootCount"></span>
     </div>
   </div>
@@ -575,8 +815,9 @@
 <!-- ══ FOOTER ════════════════════════════════════════════════════════════════ -->
 <footer>
   <p>
-    This tool is not affiliated with or endorsed by Grinding Gear Games.<br>
-    Built by the community, for the community.
+    PoE Market Signal is not affiliated with or endorsed by Grinding Gear Games.<br>
+    Built by the community, for the community. Tables refresh every 24 hours.<br>
+    Enjoying the tool? <a href="https://emrnky.gumroad.com/" target="_blank" rel="noopener">Support the project →</a>
   </p>
 </footer>
 
@@ -588,7 +829,7 @@ const SUPABASE_URL  = "https://lgjvdjoonugobiuxrdum.supabase.co"
 const SUPABASE_ANON = "sb_publishable_GZ09GVQs4Gv6RtT8jj2rAQ_BGhzFH2D"
 const IMG_BASE      = `${SUPABASE_URL}/storage/v1/object/public/images`
 const DIVINE_URL    = `${IMG_BASE}/items/Currency/Divine_Orb.png`
-
+const POE2DB_BASE   = "https://www.poe2wiki.net/wiki"
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON)
 
@@ -612,6 +853,23 @@ applyTheme(localStorage.getItem('poe2-theme') || 'dark')
 themeBtn.addEventListener('click', () =>
   applyTheme(html.dataset.theme === 'dark' ? 'light' : 'dark'))
 
+// ── Mobile hamburger toggle for category sidebar ────────────────────────────────
+const hamburgerBtn   = document.getElementById('hamburgerBtn')
+const hamburgerLabel = document.getElementById('hamburgerLabel')
+const sidebarPanel   = document.getElementById('sidebarPanel')
+
+hamburgerBtn.addEventListener('click', () => {
+  const open = sidebarPanel.classList.toggle('open')
+  hamburgerBtn.setAttribute('aria-expanded', open ? 'true' : 'false')
+})
+
+function closeSidebarOnMobile() {
+  if (window.innerWidth <= 900) {
+    sidebarPanel.classList.remove('open')
+    hamburgerBtn.setAttribute('aria-expanded', 'false')
+  }
+}
+
 // ── Signal filter pills ─────────────────────────────────────────────────────────
 document.querySelectorAll('.sig-pill').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -627,6 +885,23 @@ document.querySelectorAll('.sig-pill').forEach(btn => {
     renderTable()
   })
 })
+
+// ── Image cache ──────────────────────────────────────────────────────────────────
+// In-memory cache so repeated renders (sort/filter) of the same items never
+// re-request an image that's already loaded or already known to fail. The
+// browser's own HTTP cache handles persistence across page loads; this layer
+// just avoids redundant <img> churn within a single session.
+const imgOkCache  = new Set()   // urls confirmed loadable
+const imgBadCache = new Set()   // urls confirmed broken (skip retry → placeholder immediately)
+
+function preloadImg(url) {
+  if (!url || imgOkCache.has(url) || imgBadCache.has(url)) return
+  const im = new Image()
+  im.decoding = 'async'
+  im.onload  = () => imgOkCache.add(url)
+  im.onerror = () => imgBadCache.add(url)
+  im.src = url
+}
 
 // ── Helpers ─────────────────────────────────────────────────────────────────────
 function fmt(v, dec = 2) {
@@ -664,6 +939,13 @@ function catIcon(cat) {
   if (cat.icon_url) return cat.icon_url
   const file = cat.name.split(' ').map(w => w[0].toUpperCase() + w.slice(1)).join('')
   return `${IMG_BASE}/categories/${file}.png`
+}
+
+// Build the poe2db.tw link for an item: base + name with spaces -> underscores.
+// e.g. "Uncut Skill Gem (Level 3)" -> "https://poe2db.tw/us/Uncut_Skill_Gem_(Level_3)"
+function poe2dbUrl(name) {
+  if (!name) return POE2DB_BASE
+  return POE2DB_BASE + String(name).trim().replace(/\s+/g, '_')
 }
 
 // ── Tabs ─────────────────────────────────────────────────────────────────────────
@@ -705,14 +987,18 @@ async function loadCategories() {
     btn.dataset.name = cat.name
     const label      = cat.display_name || cat.name
     const iconSrc    = catIcon(cat)
+    preloadImg(iconSrc)
 
     btn.innerHTML = `
-      <img class="tab-img" src="${iconSrc}" alt="${label}"
+      <img class="tab-img" src="${iconSrc}" alt="${label}" loading="lazy"
         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="tab-img-ph"></span>
       <span>${label}</span>`
 
-    btn.addEventListener('click', () => selectTab(cat))
+    btn.addEventListener('click', () => {
+      selectTab(cat)
+      closeSidebarOnMobile()
+    })
     tabsEl.appendChild(btn)
   })
 
@@ -722,6 +1008,7 @@ async function loadCategories() {
 function selectTab(cat) {
   document.querySelectorAll('.tab').forEach(t =>
     t.classList.toggle('active', t.dataset.name === cat.name))
+  document.getElementById('hamburgerLabel').textContent = cat.display_name || cat.name
   loadItems(cat)
 }
 
@@ -750,6 +1037,10 @@ async function loadItems(cat) {
   allItems = data || []
   sortCol  = 'confidence'
   sortAsc  = false
+
+  // Warm the image cache for this batch up front, so rows painted later
+  // (after sort/filter) hit an already-resolved <img> instead of a fresh request.
+  allItems.forEach(it => preloadImg(itemIcon(it.icon)))
 
   const label = cat.display_name || cat.name
   document.getElementById('tmetaTitle').innerHTML =
@@ -799,24 +1090,29 @@ function renderTable() {
     const iconUrl = itemIcon(item.icon)
     const tip     = `B ${pct(item.prob_buy)} · H ${pct(item.prob_hold)} · S ${pct(item.prob_sell)}`
     const conf    = ((item.confidence || 0) * 100)
+    const itemUrl = poe2dbUrl(item.name)
 
     return `<tr>
       <td class="c-img">
-        ${iconUrl
-          ? `<img class="iimg" src="${iconUrl}" alt="${esc(item.name)}"
-               onerror="this.style.display='none';this.nextElementSibling.style.display='block';console.warn('[img fail]',this.src)">`
-          : ''}
-        <div class="iimg-ph"${iconUrl ? ' style="display:none"' : ''}></div>
+        <a class="iimg-link" href="${itemUrl}" target="_blank" rel="noopener" title="View ${esc(item.name)} on poe2db">
+          ${iconUrl
+            ? `<img class="iimg" src="${iconUrl}" alt="${esc(item.name)}" loading="lazy"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='block';console.warn('[img fail]',this.src)">`
+            : ''}
+          <div class="iimg-ph"${iconUrl ? ' style="display:none"' : ''}></div>
+        </a>
       </td>
       <td class="c-name">
-        <span class="iname" title="${esc(item.name)}">${esc(item.name)}</span>
+        <a class="iname-link" href="${itemUrl}" target="_blank" rel="noopener">
+          <span class="iname" title="${esc(item.name)}">${esc(item.name)}</span>
+        </a>
       </td>
       <td class="c-sig">
         <span class="badge badge-${item.signal}" data-tip="${tip}">${item.signal}</span>
       </td>
       <td class="c-price">
         <div class="price">
-          <img class="div-img" src="${DIVINE_URL}" alt="div"
+          <img class="div-img" src="${DIVINE_URL}" alt="div" loading="lazy"
             onerror="this.style.display='none'">
           <span>${fmtPrice(item.price)}</span>
         </div>
