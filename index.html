@@ -661,7 +661,9 @@ function itemIcon(icon) {
 }
 
 function catIcon(cat) {
-  return cat.icon_url || `${IMG_BASE}/categories/${cat.name.replace(/[^a-zA-Z0-9]/g, '_')}.png`
+  if (cat.icon_url) return cat.icon_url
+  const file = cat.name.split(' ').map(w => w[0].toUpperCase() + w.slice(1)).join('')
+  return `${IMG_BASE}/categories/${file}.png`
 }
 
 // ── Tabs ─────────────────────────────────────────────────────────────────────────
@@ -802,7 +804,7 @@ function renderTable() {
       <td class="c-img">
         ${iconUrl
           ? `<img class="iimg" src="${iconUrl}" alt="${esc(item.name)}"
-               onerror="this.style.display='none';this.nextElementSibling.style.display='block'">`
+               onerror="this.style.display='none';this.nextElementSibling.style.display='block';console.warn('[img fail]',this.src)">`
           : ''}
         <div class="iimg-ph"${iconUrl ? ' style="display:none"' : ''}></div>
       </td>
