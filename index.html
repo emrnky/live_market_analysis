@@ -203,33 +203,51 @@
 
     /* ─── Intro / hero ───────────────────────────────────────── */
     .intro {
-      background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--r);
-      padding: 20px 24px;
+      padding: 72px 28px;
       margin-bottom: 16px;
       overflow: hidden;
+      position: relative;
+      /* cover image fills the whole card */
+      background-color: var(--bg-card);
+      background-image: url('og-cover.png');
+      background-size: cover;
+      background-position: center;
+    }
+    /* semi-transparent gradient overlay — heavier on the left where text sits */
+    .intro::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--r);
+      background: linear-gradient(
+        105deg,
+        rgba(11,11,19,.95)  0%,
+        rgba(11,11,19,.88) 50%,
+        rgba(11,11,19,.60) 100%
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+    [data-theme="light"] .intro::before {
+      background: linear-gradient(
+        105deg,
+        rgba(243,241,251,.97)  0%,
+        rgba(243,241,251,.90) 50%,
+        rgba(243,241,251,.65) 100%
+      );
     }
     .intro-body {
+      position: relative;
+      z-index: 1;
       display: flex;
-      gap: 24px;
+      flex-direction: column;
       align-items: center;
+      text-align: center;
     }
-    .intro-text { flex: 1; min-width: 0; }
-
-    .intro-cover {
-      flex-shrink: 0;
-      width: 220px;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-    .intro-cover img {
-      width: 100%;
-      display: block;
-      object-fit: cover;
-      border-radius: 8px;
-    }
+    .intro-text { width: 100%; max-width: 680px; }
+    .intro-notices { align-items: center; }
 
     .intro h1 {
       font-family: var(--font-display);
@@ -930,8 +948,7 @@
       .github-btn { width: 32px; height: 32px; }
 
       /* Intro */
-      .intro { padding: 14px 14px; }
-      .intro-cover { display: none; }
+      .intro { padding: 40px 14px; }
       .intro h1 { font-size: 15px; }
       .intro p  { font-size: 12.5px; }
       .intro-notice { font-size: 11.5px; }
@@ -1038,10 +1055,6 @@
             Current league:&nbsp;<strong>Runes of Aldur</strong>
           </span>
         </div>
-      </div>
-      <div class="intro-cover">
-        <img src="/og-cover.png" alt="PoE Market Signal preview"
-             onerror="this.closest('.intro-cover').style.display='none'">
       </div>
     </div>
   </section>
