@@ -1225,6 +1225,9 @@ let sigFilter   = new Set(['BUY', 'SELL', 'HOLD'])
 let sortCol     = 'confidence'
 let sortAsc     = false
 let searchQuery = ''
+let currentCat  = ''
+let knownCats   = []
+let _skipPush   = false
 
 // ── Theme ────────────────────────────────────────────────────────────────────
 const html       = document.documentElement
@@ -1270,6 +1273,7 @@ document.querySelectorAll('.sig-pill').forEach(btn => {
       sigFilter.add(sig)
       btn.classList.add('on')
     }
+    updateUrl()
     renderTable()
   })
 })
@@ -1571,13 +1575,50 @@ async function loadCategories() {
     tabsEl.appendChild(btn)
   })
 
-  selectTab(cats[0])
+  knownCats = cats
+
+  const params   = new URLSearchParams(location.search)
+  const urlParam = params.get('category')
+  const urlSort  = params.get('sort')
+  const urlOrder = params.get('order')
+  const urlSig   = params.get('sig')
+
+  const validCols = ['name', 'signal', 'price', 'volume', 'sparkline_change', 'confidence']
+  if (urlSort && validCols.includes(urlSort)) {
+    sortCol = urlSort
+    sortAsc = urlOrder === 'asc'
+  }
+  if (urlSig) {
+    const sigs = urlSig.split(',').filter(s => ['BUY', 'SELL', 'HOLD'].includes(s))
+    if (sigs.length) {
+      sigFilter = new Set(sigs)
+      document.querySelectorAll('.sig-pill').forEach(btn =>
+        btn.classList.toggle('on', sigFilter.has(btn.dataset.sig)))
+    }
+  }
+
+  const initial = cats.find(c => c.name === urlParam) || cats[0]
+  selectTab(initial)
+}
+
+function updateUrl() {
+  if (_skipPush) return
+  const params = new URLSearchParams()
+  if (currentCat) params.set('category', currentCat)
+  if (sortCol !== 'confidence' || sortAsc) {
+    params.set('sort', sortCol)
+    params.set('order', sortAsc ? 'asc' : 'desc')
+  }
+  if (sigFilter.size < 3) params.set('sig', [...sigFilter].join(','))
+  history.pushState(null, '', '?' + params.toString())
 }
 
 function selectTab(cat) {
+  currentCat = cat.name
   document.querySelectorAll('.tab').forEach(t =>
     t.classList.toggle('active', t.dataset.name === cat.name))
   document.getElementById('hamburgerLabel').textContent = cat.display_name || cat.name
+  updateUrl()
   loadItems(cat)
 }
 
@@ -1717,6 +1758,7 @@ document.querySelectorAll('thead th[data-col]').forEach(th => {
   th.addEventListener('click', () => {
     if (sortCol === th.dataset.col) sortAsc = !sortAsc
     else { sortCol = th.dataset.col; sortAsc = false }
+    updateUrl()
     renderTable()
   })
 })
@@ -1724,6 +1766,37 @@ document.querySelectorAll('thead th[data-col]').forEach(th => {
 // ── Boot ─────────────────────────────────────────────────────────────────────
 document.getElementById('tfootLeague').textContent = LEAGUE
 loadCategories()
+
+window.addEventListener('popstate', () => {
+  const params   = new URLSearchParams(location.search)
+  const urlCat   = params.get('category')
+  const urlSort  = params.get('sort')
+  const urlOrder = params.get('order')
+  const urlSig   = params.get('sig')
+
+  const validCols = ['name', 'signal', 'price', 'volume', 'sparkline_change', 'confidence']
+  if (urlSort && validCols.includes(urlSort)) {
+    sortCol = urlSort
+    sortAsc = urlOrder === 'asc'
+  } else {
+    sortCol = 'confidence'
+    sortAsc = false
+  }
+
+  if (urlSig) {
+    const sigs = urlSig.split(',').filter(s => ['BUY', 'SELL', 'HOLD'].includes(s))
+    sigFilter = sigs.length ? new Set(sigs) : new Set(['BUY', 'SELL', 'HOLD'])
+  } else {
+    sigFilter = new Set(['BUY', 'SELL', 'HOLD'])
+  }
+  document.querySelectorAll('.sig-pill').forEach(btn =>
+    btn.classList.toggle('on', sigFilter.has(btn.dataset.sig)))
+
+  _skipPush = true
+  const cat = knownCats.find(c => c.name === urlCat) || knownCats[0]
+  if (cat) selectTab(cat)
+  _skipPush = false
+})
 </script>
 </body>
 </html>
