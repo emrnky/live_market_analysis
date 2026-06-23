@@ -1,0 +1,12 @@
+# robots.txt — poemarketsignal.com
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /.env
+Disallow: /.git/
+Disallow: /admin/
+Disallow: /private/
+
+# Sitemap
+Sitemap: https://poemarketsignal.com/sitemap.xml

@@ -6,24 +6,46 @@
 
   <title>PoE Market Signal — Path of Exile 2 Market Signals &amp; Trade Predictions</title>
   <meta name="description" content="PoE Market Signal uses a machine learning model to read Path of Exile 2 market data and surface buy, sell, and hold signals so you can find the best trade opportunities before everyone else. Built by the community, for the community — not affiliated with Grinding Gear Games. Tables refresh every 5 minutes." />
-  <meta name="keywords" content="PoE2, Path of Exile 2, market signal, trade snipe, PoE2 prices, PoE2 trading, PoE2 flipping, PoE2 economy" />
+  <meta name="keywords" content="PoE2, Path of Exile 2, market signal, trade snipe, PoE2 prices, PoE2 trading, PoE2 flipping, PoE2 economy, PoE2 market tracker, Path of Exile market analysis" />
   <meta name="robots" content="index, follow" />
+  <meta name="author" content="PoE Market Signal" />
   <link rel="canonical" href="https://poemarketsignal.com/" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="PoE Market Signal — Path of Exile 2 Market Signals" />
-  <meta property="og:description" content="Machine-learning-driven buy/sell/hold signals for Path of Exile 2 trading. Find the best flips before the market catches up." />
+  <meta property="og:title" content="PoE Market Signal — Path of Exile 2 Market Signals &amp; Trade Predictions" />
+  <meta property="og:description" content="Machine-learning buy/sell/hold signals for Path of Exile 2 trading. Spot the best flips before the market catches up. Free, community-built, refreshes every 5 minutes." />
   <meta property="og:url" content="https://poemarketsignal.com/" />
   <meta property="og:image" content="/og-cover.png" />
+  <meta property="og:site_name" content="PoE Market Signal" />
 
   <!-- Twitter card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="PoE Market Signal — Path of Exile 2 Market Signals" />
-  <meta name="twitter:description" content="Machine-learning-driven buy/sell/hold signals for Path of Exile 2 trading." />
+  <meta name="twitter:description" content="Machine-learning buy/sell/hold signals for Path of Exile 2 trading. Free, community-built tool." />
+  <meta name="twitter:image" content="/og-cover.png" />
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/icon.svg" />
+
+  <!-- JSON-LD structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "PoE Market Signal",
+    "url": "https://poemarketsignal.com/",
+    "description": "Machine-learning-driven buy/sell/hold signals for Path of Exile 2 trading. Find the best flips before the market catches up.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://poemarketsignal.com/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,7 +60,7 @@
       --border:     #242440;
       --text:       #dddaec;
       --text-muted: #6a6890;
-      --accent: #e0c982; 
+      --accent:     #e0c982;
       --accent-dim: #9e7c30;
       --buy:        #22c55e;
       --sell:       #ef4444;
@@ -48,7 +70,7 @@
       --shadow:     0 8px 40px rgba(0,0,0,.7);
       --r:          10px;
       --font-display: 'Sora', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-body:    'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     [data-theme="light"] {
       --bg:         #f3f1fb;
@@ -83,10 +105,8 @@
       transition: background .25s, color .25s;
     }
 
-    /* ─── Mobile coffee banner (hidden on desktop) ──────────── */
-    .coffee-mobile {
-      display: none;
-    }
+    /* ─── Mobile coffee banner ───────────────────────────────── */
+    .coffee-mobile { display: none; }
 
     /* ─── Header ─────────────────────────────────────────────── */
     header {
@@ -111,16 +131,18 @@
       justify-content: center;
       gap: 9px;
       white-space: nowrap;
+      text-decoration: none;
+      color: inherit;
+      border-radius: 8px;
+      padding: 4px 10px;
+      transition: background .12s;
     }
+    .logo-area:hover { background: var(--row-hover); }
 
-    .logo-icon {
-      width: 26px;
-      height: 26px;
-      flex-shrink: 0;
-    }
-    .logo-icon .ring   { fill: none; stroke: var(--accent); }
-    .logo-icon .bull   { fill: var(--accent); opacity: .2; }
-    .logo-icon .dot    { fill: var(--accent); }
+    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; }
+    .logo-icon .ring { fill: none; stroke: var(--accent); }
+    .logo-icon .bull { fill: var(--accent); opacity: .2; }
+    .logo-icon .dot  { fill: var(--accent); }
 
     .logo-text {
       font-family: var(--font-display);
@@ -136,8 +158,22 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 10px;
+      gap: 8px;
     }
+
+    .github-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color .15s, background .15s;
+    }
+    .github-btn:hover { color: var(--text); background: var(--row-hover); }
+    .github-btn svg { width: 20px; height: 20px; }
 
     .theme-btn {
       appearance: none;
@@ -165,25 +201,111 @@
       padding: 32px 24px 0;
     }
 
-    /* ─── Intro / SEO copy ───────────────────────────────────── */
+    /* ─── Intro / hero ───────────────────────────────────────── */
     .intro {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--r);
-      padding: 18px 22px;
+      padding: 20px 24px;
       margin-bottom: 16px;
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.7;
+      overflow: hidden;
     }
-    .intro strong { color: var(--text); }
+    .intro-body {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+    .intro-text { flex: 1; min-width: 0; }
+
+    .intro-cover {
+      flex-shrink: 0;
+      width: 220px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .intro-cover img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
     .intro h1 {
       font-family: var(--font-display);
       font-size: 17px;
       font-weight: 600;
       color: var(--text);
-      margin-bottom: 6px;
+      margin-bottom: 10px;
       letter-spacing: -.01em;
+    }
+    .intro p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+    .intro p + p { margin-top: 8px; }
+    .intro strong { color: var(--text); }
+
+    .intro-notices {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .intro-notice {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      background: rgba(239,68,68,.08);
+      border: 1px solid rgba(239,68,68,.2);
+      border-radius: 7px;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: #f87171;
+      line-height: 1.55;
+    }
+    [data-theme="light"] .intro-notice {
+      background: rgba(192,40,45,.05);
+      border-color: rgba(192,40,45,.15);
+      color: #c0282d;
+    }
+    .intro-notice a {
+      color: #fff;
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    [data-theme="light"] .intro-notice a { color: #7c1416; }
+
+    .intro-notice-league {
+      background: rgba(224,201,130,.08);
+      border-color: rgba(224,201,130,.22);
+      color: var(--accent);
+    }
+    .intro-notice-league a {
+      color: inherit;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    [data-theme="light"] .intro-notice-league {
+      background: rgba(180,140,30,.06);
+      border-color: rgba(180,140,30,.2);
+      color: var(--accent-dim);
+    }
+
+    /* Support + league notices: full-width, centered text */
+    .intro-notice-support,
+    .intro-notice-badge {
+      justify-content: center;
+      text-align: center;
+      flex-wrap: wrap;
+      row-gap: 2px;
+    }
+    .intro-notice-support .notice-icon,
+    .intro-notice-badge .notice-icon {
+      flex-shrink: 0;
     }
 
     /* ─── Layout ────────────────────────────────────────────── */
@@ -212,12 +334,22 @@
     .sidebar::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
 
     .sidebar-head {
-      display: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 11px 14px 10px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
     }
 
     .content { flex: 1; min-width: 0; }
 
-    /* ─── Sidebar category list ──────────────────────────────── */
+    /* ─── Sidebar tabs ───────────────────────────────────────── */
     .tabs { display: flex; flex-direction: column; }
 
     .tab {
@@ -240,8 +372,7 @@
       width: 100%;
       transition: color .12s, background .12s, border-left-color .12s;
     }
-    .tab:first-child { border-radius: var(--r) var(--r) 0 0; }
-    .tab:last-child  { border-bottom: none; border-radius: 0 0 var(--r) var(--r); }
+    .tab:last-child { border-bottom: none; }
     .tab:hover { color: var(--text); background: var(--row-hover); }
     .tab.active {
       background: var(--bg-tab);
@@ -249,22 +380,19 @@
       color: var(--accent);
     }
 
-    .tab-img {
-      width: 22px;
-      height: 22px;
-      object-fit: contain;
-      image-rendering: pixelated;
-      border-radius: 3px;
-      flex-shrink: 0;
-    }
-    .tab-img-ph {
-      width: 22px;
-      height: 22px;
+    .tab-img { width: 22px; height: 22px; object-fit: contain; image-rendering: pixelated; border-radius: 3px; flex-shrink: 0; }
+    .tab-img-ph { width: 22px; height: 22px; background: var(--border); border-radius: 3px; flex-shrink: 0; display: none; }
+    .tab-label { flex: 1; }
+    .tab-count {
+      font-size: 10px;
+      font-weight: 600;
       background: var(--border);
-      border-radius: 3px;
-      flex-shrink: 0;
+      border-radius: 10px;
+      padding: 1px 6px;
+      color: var(--text-muted);
       display: none;
     }
+    .tab.active .tab-count { display: inline-block; background: var(--accent); color: #0b0b13; }
 
     /* ─── Table card ─────────────────────────────────────────── */
     .tcard {
@@ -272,23 +400,7 @@
       border: 1px solid var(--border);
       border-radius: var(--r);
       overflow: hidden;
-      position: relative;
     }
-
-    .tcard-overlay {
-      display: none;
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,.45);
-      z-index: 10;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 10px;
-      border-radius: var(--r);
-    }
-    [data-theme="light"] .tcard-overlay { background: rgba(245,243,255,.7); }
-    .tcard-overlay.visible { display: flex; }
 
     .tmeta {
       display: flex;
@@ -302,12 +414,10 @@
     }
     .tmeta-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .tmeta strong { color: var(--text); font-weight: 600; }
+    .tmeta-ts { font-variant-numeric: tabular-nums; white-space: nowrap; }
 
     /* Signal filter pills */
-    .sig-filter {
-      display: flex;
-      gap: 5px;
-    }
+    .sig-filter { display: flex; gap: 5px; }
     .sig-pill {
       appearance: none;
       background: transparent;
@@ -328,6 +438,138 @@
     .sig-pill.on { background: rgba(255,255,255,.06); }
     [data-theme="light"] .sig-pill.on { background: rgba(0,0,0,.04); }
 
+    /* ─── Search bar + dropdown ──────────────────────────────── */
+    .tsearch {
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .search-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      color: var(--text-muted);
+      pointer-events: none;
+      flex-shrink: 0;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--bg-tab);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
+      padding: 7px 32px 7px 34px;
+      outline: none;
+      transition: border-color .15s, box-shadow .15s, border-radius .1s;
+      appearance: none;
+    }
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(224,201,130,.1); }
+    .search-input::-webkit-search-cancel-button { display: none; }
+    .search-input.open { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom-color: transparent; }
+    .search-clear {
+      position: absolute;
+      right: 8px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: none;
+      font-size: 18px;
+      line-height: 1;
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: color .12s;
+      z-index: 1;
+    }
+    .search-clear:hover { color: var(--text); }
+    .search-clear.visible { display: flex; align-items: center; }
+
+    /* Dropdown */
+    .search-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--accent);
+      border-top: none;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.6);
+      z-index: 200;
+      overflow: hidden;
+    }
+    [data-theme="light"] .search-dropdown { box-shadow: 0 8px 30px rgba(40,30,80,.15); }
+    .search-dropdown.open { display: block; }
+
+    .sd-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      transition: background .06s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .sd-item:last-of-type { border-bottom: none; }
+    .sd-item:hover,
+    .sd-item.focused { background: var(--row-hover); }
+
+    .sd-img { width: 28px; height: 28px; object-fit: contain; image-rendering: pixelated; flex-shrink: 0; display: block; }
+    .sd-img-ph { width: 28px; height: 28px; background: var(--border); border-radius: 3px; flex-shrink: 0; opacity: .4; }
+
+    .sd-name {
+      flex: 1;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .sd-name mark {
+      background: none;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .sd-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      padding: 2px 8px;
+      border-radius: 999px;
+      flex-shrink: 0;
+    }
+
+    .sd-price {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .sd-footer {
+      padding: 7px 12px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      background: var(--bg-tab);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ─── Table ──────────────────────────────────────────────── */
     .twrap { overflow-x: auto; }
 
     table {
@@ -356,7 +598,6 @@
     thead th.sorted.asc::after  { content: " ↑"; }
     thead th.sorted.desc::after { content: " ↓"; }
 
-    /* header tooltip */
     .th-tip { cursor: help; }
     .th-tip:hover .th-tip-bubble { display: block; }
     .th-tip-bubble {
@@ -389,10 +630,10 @@
     tbody tr:last-child { border-bottom: none; }
     tbody tr:nth-child(even) { background: var(--row-even); }
     tbody tr:hover { background: var(--row-hover); }
+    tbody tr.highlight-row { background: rgba(224,201,130,.08); }
 
     td { padding: 8px 14px; vertical-align: middle; }
 
-    /* col widths */
     .c-img  { width: 50px; text-align: center; padding: 6px 8px; }
     .c-name { min-width: 170px; }
     .c-sig  { width: 88px; }
@@ -401,34 +642,23 @@
     .c-chg  { width: 80px; }
     .c-conf { width: 150px; }
 
-    /* item link wrapper */
-    .ilink {
-      display: contents;
-    }
-    .iimg-link, .iname-link {
-      text-decoration: none;
-      color: inherit;
-    }
+    .iimg-link, .iname-link { text-decoration: none; color: inherit; }
 
-    /* item icon */
     .iimg {
-      width: 38px;
-      height: 38px;
+      width: 38px; height: 38px;
       object-fit: contain;
       image-rendering: pixelated;
       display: block;
       margin: auto;
     }
     .iimg-ph {
-      width: 38px;
-      height: 38px;
+      width: 38px; height: 38px;
       background: var(--border);
       border-radius: 4px;
       margin: auto;
       opacity: .35;
     }
 
-    /* item name */
     .iname {
       font-weight: 600;
       color: var(--text);
@@ -441,7 +671,6 @@
     }
     .iname-link:hover .iname { color: var(--accent); text-decoration: underline; }
 
-    /* signal badge */
     .badge {
       display: inline-flex;
       align-items: center;
@@ -456,7 +685,6 @@
     .badge-SELL { background: rgba(239,68,68,.14);  color: var(--sell); border: 1px solid rgba(239,68,68,.3); }
     .badge-HOLD { background: rgba(245,158,11,.14); color: var(--hold); border: 1px solid rgba(245,158,11,.3); }
 
-    /* tooltip on badge hover */
     .badge[data-tip] { cursor: default; }
     .badge[data-tip]:hover::after {
       content: attr(data-tip);
@@ -478,7 +706,6 @@
       pointer-events: none;
     }
 
-    /* price cell */
     .price {
       display: flex;
       align-items: center;
@@ -487,19 +714,16 @@
       font-variant-numeric: tabular-nums;
     }
     .div-img {
-      width: 20px;
-      height: 20px;
+      width: 20px; height: 20px;
       object-fit: contain;
       image-rendering: pixelated;
       flex-shrink: 0;
     }
 
-    /* change */
     .pos { color: var(--buy); }
     .neg { color: var(--sell); }
     .neu { color: var(--text-muted); }
 
-    /* confidence */
     .conf { display: flex; align-items: center; gap: 8px; }
     .cbar {
       flex: 1;
@@ -510,7 +734,7 @@
       overflow: hidden;
     }
     .cfill { height: 100%; border-radius: 2px; background: var(--accent); }
-    .cval  {
+    .cval {
       min-width: 36px;
       text-align: right;
       font-size: 12px;
@@ -518,21 +742,28 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* state */
+    /* ─── Skeleton ───────────────────────────────────────────── */
+    .skel {
+      display: inline-block;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--border) 25%, var(--bg-tab) 50%, var(--border) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      from { background-position: 200% 0; }
+      to   { background-position: -200% 0; }
+    }
+    .skel-icon  { width: 38px; height: 38px; border-radius: 4px; display: block; margin: auto; }
+    .skel-text  { height: 13px; border-radius: 3px; display: block; }
+    .skel-badge { height: 20px; width: 46px; border-radius: 999px; }
+    .skel-bar   { height: 4px; border-radius: 2px; width: 100%; }
+
     .srow td {
       padding: 56px 24px;
       text-align: center;
       color: var(--text-muted);
     }
-    .spinner {
-      width: 24px; height: 24px;
-      border: 2px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin .7s linear infinite;
-      margin: 0 auto 10px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
 
     .tfoot {
       border-top: 1px solid var(--border);
@@ -544,7 +775,7 @@
       color: var(--text-muted);
     }
 
-    /* ─── Coffee button (header, animated border) ───────────── */
+    /* ─── Coffee button ──────────────────────────────────────── */
     .coffee-hdr {
       --coffee-border: conic-gradient(from var(--coffee-angle),
         var(--accent), #fff6d8, var(--accent), var(--accent-dim), var(--accent));
@@ -589,11 +820,10 @@
       inherits: false;
       initial-value: 0deg;
     }
-    @keyframes coffee-spin {
-      to { --coffee-angle: 360deg; }
-    }
+    @keyframes coffee-spin { to { --coffee-angle: 360deg; } }
     @media (prefers-reduced-motion: reduce) {
       .coffee-hdr::before { animation: none; }
+      .skel { animation: none; opacity: .5; }
     }
 
     .coffee-mobile .coffee-hdr {
@@ -603,7 +833,7 @@
       font-size: 14px;
     }
 
-    /* ─── Hamburger (mobile categories) ─────────────────────── */
+    /* ─── Hamburger ──────────────────────────────────────────── */
     .hamburger-btn {
       display: none;
       appearance: none;
@@ -622,11 +852,7 @@
       width: 100%;
       margin-bottom: 10px;
     }
-    .hamburger-btn .bars {
-      width: 18px; height: 13px;
-      position: relative;
-      flex-shrink: 0;
-    }
+    .hamburger-btn .bars { width: 18px; height: 13px; position: relative; flex-shrink: 0; }
     .hamburger-btn .bars span {
       position: absolute;
       left: 0; right: 0;
@@ -641,48 +867,109 @@
     /* ─── Footer ─────────────────────────────────────────────── */
     footer {
       border-top: 1px solid var(--border);
-      padding: 22px 24px;
-      text-align: center;
+      padding: 24px;
       font-size: 12px;
       color: var(--text-muted);
-      line-height: 1.8;
+      line-height: 1.9;
+    }
+    .footer-inner {
+      max-width: 1480px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+    }
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
     footer a { color: var(--accent); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
+    .footer-github {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 10px;
+      transition: color .15s, border-color .15s;
+    }
+    .footer-github:hover { color: var(--text); border-color: var(--text-muted); text-decoration: none; }
+    .footer-github svg { width: 14px; height: 14px; flex-shrink: 0; }
 
     /* ─── Responsive ─────────────────────────────────────────── */
     @media (max-width: 900px) {
-      .layout    { flex-direction: column; }
-
+      .layout { flex-direction: column; }
       .hamburger-btn { display: flex; }
-
-      .sidebar {
-        width: 100%;
-        max-height: none;
-        position: static;
-        display: none;
-        border-radius: var(--r);
-      }
+      .sidebar { width: 100%; max-height: none; position: static; display: none; border-radius: var(--r); }
       .sidebar.open { display: block; }
-
       .tabs { flex-direction: column; max-height: 260px; overflow-y: auto; }
-      .tab  { border-radius: 0; }
-      .tab:first-child { border-radius: var(--r) var(--r) 0 0; }
-      .tab:last-child  { border-radius: 0 0 var(--r) var(--r); }
     }
+
     @media (max-width: 680px) {
-      main     { padding: 16px 12px 0; }
-      header   { padding: 0 12px; grid-template-columns: auto 1fr auto; }
+      /* Layout */
+      main  { padding: 12px 10px 0; }
+      header { padding: 0 12px; grid-template-columns: auto 1fr auto; }
+
+      /* Logo */
       .logo-text { font-size: 15px; }
+
+      /* Coffee */
       .coffee-hdr.in-header { display: none; }
-      .coffee-mobile { display: block; padding: 12px 12px 0; }
+      .coffee-mobile { display: block; padding: 10px 10px 0; }
+
+      /* GitHub btn: keep visible but compact */
+      .github-btn { width: 32px; height: 32px; }
+
+      /* Intro */
+      .intro { padding: 14px 14px; }
+      .intro-cover { display: none; }
+      .intro h1 { font-size: 15px; }
+      .intro p  { font-size: 12.5px; }
+      .intro-notice { font-size: 11.5px; }
+
+      /* Table columns */
       .c-vol, .c-chg { display: none; }
+      .c-conf { width: 100px; }
+      td { padding: 7px 10px; }
+      .c-img { width: 40px; padding: 5px 6px; }
+      .iimg   { width: 30px; height: 30px; }
+      .iimg-ph{ width: 30px; height: 30px; }
+
+      /* Search dropdown — cap height and scroll on mobile */
+      .search-dropdown {
+        max-height: 55vh;
+        overflow-y: auto;
+      }
+      .sd-price { display: none; }
+
+      /* tmeta wraps nicely */
+      .tmeta { flex-wrap: wrap; gap: 6px; }
+      .tmeta-ts { width: 100%; order: 3; }
+
+      /* Footer */
+      footer { padding: 16px 12px; }
+      .footer-links { gap: 10px; }
+    }
+
+    @media (max-width: 400px) {
+      .logo-text .logo-accent { display: none; }
+      .logo-text::after { content: "Market Signal"; color: var(--accent); }
+      .sig-pill { padding: 2px 7px; font-size: 10px; }
     }
   </style>
 </head>
 <body>
 
-<!-- ══ MOBILE COFFEE BANNER (top of page on mobile) ════════════════════════════ -->
+<!-- ══ MOBILE COFFEE BANNER ════════════════════════════════════════════════════ -->
 <div class="coffee-mobile">
   <a href="https://emrnky.gumroad.com/" target="_blank" rel="noopener" class="coffee-hdr">
     <span class="coffee-icon">☕</span> <span>Support the project — buy me a coffee</span>
@@ -692,19 +979,25 @@
 <!-- ══ HEADER ════════════════════════════════════════════════════════════════ -->
 <header>
   <div></div>
-  <div class="logo-area">
+  <a href="/" class="logo-area" title="PoE Market Signal — go home">
     <svg class="logo-icon" viewBox="0 0 64 64" aria-hidden="true">
       <circle class="ring" cx="32" cy="32" r="29" stroke-width="4"/>
       <circle class="ring" cx="32" cy="32" r="19" stroke-width="4"/>
       <circle class="bull" cx="32" cy="32" r="9"/>
       <circle class="ring" cx="32" cy="32" r="9" stroke-width="3.5"/>
-      <circle class="dot" cx="32" cy="32" r="3.6"/>
+      <circle class="dot"  cx="32" cy="32" r="3.6"/>
     </svg>
     <span class="logo-text">PoE <span class="logo-accent">Market Signal</span></span>
-  </div>
+  </a>
   <div class="hdr-end">
     <a href="https://emrnky.gumroad.com/" target="_blank" rel="noopener" class="coffee-hdr in-header">
       <span class="coffee-icon">☕</span> <span>Buy me a coffee</span>
+    </a>
+    <a href="https://github.com/emrnky/live_market_analysis" target="_blank" rel="noopener"
+       class="github-btn" title="Star us on GitHub" aria-label="GitHub repository">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+      </svg>
     </a>
     <button class="theme-btn" id="themeBtn">
       <span id="themeIcon">☀️</span>
@@ -716,20 +1009,41 @@
 <!-- ══ MAIN ══════════════════════════════════════════════════════════════════ -->
 <main>
 
-  <!-- SEO intro block -->
+  <!-- Hero intro block -->
   <section class="intro">
-    <h1>PoE Market Signal — Path of Exile 2 market signals</h1>
-    <p>
-      <strong>PoE Market Signal</strong> is a website built to snipe current Path of Exile 2 market values using a machine learning model
-      that reads live trade data and predicts where the market is heading. We turn that prediction into a simple
-      <strong>buy</strong>, <strong>sell</strong>, or <strong>hold</strong> signal for thousands of items, so you can find the
-      best trade opportunities before the rest of the market catches on. PoE Market Signal is not affiliated with or endorsed by
-      Grinding Gear Games — it's built by the community, for the community. 
-      <p style="color: #e74c3c;">
-      Tables currently refresh every 5 minutes (it will be reduced to <10 seconds if there will be enough audience, we trying to limit server usage right now).
-      If this tool saves you time or currency, consider supporting the project.
-      </p>
-      </p>
+    <div class="intro-body">
+      <div class="intro-text">
+        <h1>PoE Market Signal — Path of Exile 2 market signals</h1>
+        <p>
+          <strong>PoE Market Signal</strong> is a community-built tool that monitors live Path of Exile 2 trade data
+          and runs it through a machine learning model to predict where item prices are heading.
+          Each item gets a simple <strong>BUY</strong>, <strong>SELL</strong>, or <strong>HOLD</strong> signal
+          so you can spot the best flipping opportunities before the rest of the market catches on.
+        </p>
+        <p>
+          Not affiliated with or endorsed by Grinding Gear Games.
+          All signals are generated automatically and are for informational purposes only — not financial or trading advice.
+        </p>
+        <div class="intro-notices">
+          <span class="intro-notice">
+            <span class="notice-icon">⏱</span>
+            Tables refresh every 5 minutes. Refresh rate will drop to &lt;10 s once we reach a larger audience — helping us limit server costs for now.
+          </span>
+          <span class="intro-notice intro-notice-league intro-notice-support">
+            <span class="notice-icon">☕</span>
+            If this saves you currency, consider&nbsp;<a href="https://emrnky.gumroad.com/" target="_blank" rel="noopener">supporting the project</a>&nbsp;— it helps keep the server running.
+          </span>
+          <span class="intro-notice intro-notice-league intro-notice-badge" style="background:rgba(224,201,130,.05)">
+            <span class="notice-icon">⚡</span>
+            Current league:&nbsp;<strong>Runes of Aldur</strong>
+          </span>
+        </div>
+      </div>
+      <div class="intro-cover">
+        <img src="/og-cover.png" alt="PoE Market Signal preview"
+             onerror="this.closest('.intro-cover').style.display='none'">
+      </div>
+    </div>
   </section>
 
   <div class="layout">
@@ -740,10 +1054,19 @@
   </button>
 
   <aside class="sidebar" id="sidebarPanel">
+    <div class="sidebar-head">
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+        <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3A1.5 1.5 0 0 1 15 10.5v3A1.5 1.5 0 0 1 13.5 15h-3A1.5 1.5 0 0 1 9 13.5v-3z"/>
+      </svg>
+      Categories
+    </div>
     <div class="tabs" id="tabs">
-      <div style="color:var(--text-muted);padding:10px 16px;font-size:13px">
-        <div class="spinner" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin:0 8px 0 0"></div>
-        Loading…
+      <div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px">
+        <div class="skel skel-text" style="width:75%"></div>
+        <div class="skel skel-text" style="width:55%"></div>
+        <div class="skel skel-text" style="width:68%"></div>
+        <div class="skel skel-text" style="width:80%"></div>
+        <div class="skel skel-text" style="width:60%"></div>
       </div>
     </div>
   </aside>
@@ -751,20 +1074,30 @@
   <!-- Items panel -->
   <div class="content">
   <div class="tcard">
-    <div class="tcard-overlay" id="tcardOverlay">
-      <div class="spinner"></div>
-      <div style="font-size:13px;color:var(--text-muted)">Loading…</div>
-    </div>
     <div class="tmeta" id="tmeta">
       <div class="tmeta-left">
-        <span id="tmetaTitle">Select a category above</span>
+        <span id="tmetaTitle">Select a category</span>
         <div class="sig-filter" id="sigFilter" style="display:none">
           <button class="sig-pill sig-pill-buy  on" data-sig="BUY" >BUY</button>
           <button class="sig-pill sig-pill-sell on" data-sig="SELL">SELL</button>
           <button class="sig-pill sig-pill-hold on" data-sig="HOLD">HOLD</button>
         </div>
       </div>
-      <span id="tmetaTs"></span>
+      <span class="tmeta-ts" id="tmetaTs"></span>
+    </div>
+
+    <div class="tsearch" id="tsearch" style="display:none">
+      <div class="search-wrap">
+        <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="search" id="searchInput" class="search-input"
+               placeholder="Search items…" autocomplete="off" spellcheck="false"
+               role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="searchDropdown">
+        <button class="search-clear" id="searchClear" aria-label="Clear search" tabindex="-1">×</button>
+        <div class="search-dropdown" id="searchDropdown" role="listbox"></div>
+      </div>
     </div>
 
     <div class="twrap">
@@ -775,39 +1108,36 @@
             <th class="c-name" data-col="name">Item</th>
             <th class="c-sig th-tip" data-col="signal">
               Signal
-              <span class="th-tip-bubble">Our model's current call on the item: BUY, SELL, or HOLD based on predicted price movement.</span>
+              <span class="th-tip-bubble">Our model's current call: BUY, SELL, or HOLD based on predicted price movement.</span>
             </th>
             <th class="c-price th-tip" data-col="price">
               Price
-              <span class="th-tip-bubble">Latest known market price, shown in Divine Orbs.</span>
+              <span class="th-tip-bubble">Latest market price in Divine Orbs.</span>
             </th>
             <th class="c-vol th-tip" data-col="volume">
               Volume
-              <span class="th-tip-bubble">How many listings/trades of this item were seen in the latest data pull.</span>
+              <span class="th-tip-bubble">Number of listings seen in the latest data pull.</span>
             </th>
             <th class="c-chg th-tip" data-col="sparkline_change">
               7d&thinsp;%
-              <span class="th-tip-bubble">Price change over the last 7 days, compared to the previous period.</span>
+              <span class="th-tip-bubble">Price change over the last 7 days vs. the prior period.</span>
             </th>
             <th class="c-conf th-tip" data-col="confidence">
               Confidence
-              <span class="th-tip-bubble">How confident the model is in this signal — higher % means stronger agreement across its prediction probabilities.</span>
+              <span class="th-tip-bubble">How certain the model is — higher % means stronger agreement across prediction probabilities.</span>
             </th>
           </tr>
         </thead>
         <tbody id="tbody">
           <tr class="srow">
-            <td colspan="7">
-              <div class="spinner"></div>
-              <div>Loading…</div>
-            </td>
+            <td colspan="7">Select a category from the sidebar to load items.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <div class="tfoot" id="tfoot">
-      <span>Live signals · refreshed every 24 hours</span>
+      <span>Live signals · refreshed every 5 minutes · <span id="tfootLeague" style="color:var(--accent)"></span></span>
       <span id="tfootCount"></span>
     </div>
   </div>
@@ -817,20 +1147,27 @@
 
 <!-- ══ FOOTER ════════════════════════════════════════════════════════════════ -->
 <footer>
-  <p>
-    PoE Market Signal is an independent, community built tool.</p>
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a href="https://emrnky.gumroad.com/" target="_blank" rel="noopener">☕ Support the project</a>
+      <a href="https://github.com/emrnky/live_market_analysis" target="_blank" rel="noopener"
+         class="footer-github">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+        Star on GitHub · report issues
+      </a>
+    </div>
     <p>
-    It is not affiliated with, endorsed by, or sponsored by Grinding Gear Games.</p> 
+      PoE Market Signal is an independent, community-built tool.
+      Not affiliated with, endorsed by, or sponsored by Grinding Gear Games.
+      Path of Exile and Path of Exile 2 are trademarks of Grinding Gear Games.
+    </p>
     <p>
-      Path of Exile and Path of Exile 2 are trademarks of Grinding Gear Games. 
-      </p>
-      All predictions and signals are generated automatically and are provided for informational purposes only; 
-    they are not financial or trading advice, and no outcome is guaranteed. 
-    <p>
-      Use at your own discretion.
-      </p>
-    Enjoying the tool? <a href="https://emrnky.gumroad.com/" target="_blank" rel="noopener">Support the project →</a>
-  </p>
+      All predictions and signals are generated automatically and provided for informational purposes only —
+      not financial or trading advice. No outcome is guaranteed. Use at your own discretion.
+    </p>
+  </div>
 </footer>
 
 <!-- ══ SCRIPTS ═══════════════════════════════════════════════════════════════ -->
@@ -841,22 +1178,26 @@ const SUPABASE_URL  = "https://lgjvdjoonugobiuxrdum.supabase.co"
 const SUPABASE_ANON = "sb_publishable_GZ09GVQs4Gv6RtT8jj2rAQ_BGhzFH2D"
 const IMG_BASE      = `${SUPABASE_URL}/storage/v1/object/public/images`
 const DIVINE_URL    = `${IMG_BASE}/items/Currency/Divine_Orb.png`
-const POE2DB_BASE   = "https://www.poe2wiki.net/wiki"
+const POE2DB_BASE   = "https://www.poe2wiki.net/wiki/"
+const LEAGUE        = "Runes of Aldur"
+const DROPDOWN_MAX  = 8
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON)
 
-let allItems   = []      // full result for active tab
-let sigFilter  = new Set(['BUY', 'SELL', 'HOLD'])
-let sortCol    = 'confidence'
-let sortAsc    = false
+let allItems    = []
+let sigFilter   = new Set(['BUY', 'SELL', 'HOLD'])
+let sortCol     = 'confidence'
+let sortAsc     = false
+let searchQuery = ''
 
+// ── Theme ────────────────────────────────────────────────────────────────────
 const html       = document.documentElement
 const themeBtn   = document.getElementById('themeBtn')
 const themeIcon  = document.getElementById('themeIcon')
 const themeLabel = document.getElementById('themeLabel')
 
 function applyTheme(t) {
-  html.dataset.theme    = t
+  html.dataset.theme     = t
   themeIcon.textContent  = t === 'dark' ? '☀️' : '🌙'
   themeLabel.textContent = t === 'dark' ? 'Light' : 'Dark'
   localStorage.setItem('poe2-theme', t)
@@ -865,10 +1206,9 @@ applyTheme(localStorage.getItem('poe2-theme') || 'dark')
 themeBtn.addEventListener('click', () =>
   applyTheme(html.dataset.theme === 'dark' ? 'light' : 'dark'))
 
-// ── Mobile hamburger toggle for category sidebar ────────────────────────────────
-const hamburgerBtn   = document.getElementById('hamburgerBtn')
-const hamburgerLabel = document.getElementById('hamburgerLabel')
-const sidebarPanel   = document.getElementById('sidebarPanel')
+// ── Mobile hamburger ─────────────────────────────────────────────────────────
+const hamburgerBtn = document.getElementById('hamburgerBtn')
+const sidebarPanel = document.getElementById('sidebarPanel')
 
 hamburgerBtn.addEventListener('click', () => {
   const open = sidebarPanel.classList.toggle('open')
@@ -882,12 +1222,12 @@ function closeSidebarOnMobile() {
   }
 }
 
-// ── Signal filter pills ─────────────────────────────────────────────────────────
+// ── Signal filter pills ──────────────────────────────────────────────────────
 document.querySelectorAll('.sig-pill').forEach(btn => {
   btn.addEventListener('click', () => {
     const sig = btn.dataset.sig
     if (sigFilter.has(sig)) {
-      if (sigFilter.size === 1) return  // keep at least one
+      if (sigFilter.size === 1) return
       sigFilter.delete(sig)
       btn.classList.remove('on')
     } else {
@@ -898,13 +1238,144 @@ document.querySelectorAll('.sig-pill').forEach(btn => {
   })
 })
 
-// ── Image cache ──────────────────────────────────────────────────────────────────
-// In-memory cache so repeated renders (sort/filter) of the same items never
-// re-request an image that's already loaded or already known to fail. The
-// browser's own HTTP cache handles persistence across page loads; this layer
-// just avoids redundant <img> churn within a single session.
-const imgOkCache  = new Set()   // urls confirmed loadable
-const imgBadCache = new Set()   // urls confirmed broken (skip retry → placeholder immediately)
+// ── Search + dropdown ────────────────────────────────────────────────────────
+const searchInput    = document.getElementById('searchInput')
+const searchClear    = document.getElementById('searchClear')
+const searchDropdown = document.getElementById('searchDropdown')
+
+let dropMatches  = []   // current set shown in dropdown
+let dropFocusIdx = -1
+
+function openDropdown(matches) {
+  dropMatches  = matches
+  dropFocusIdx = -1
+
+  if (!matches.length || !searchQuery) {
+    closeDropdown()
+    return
+  }
+
+  const slice = matches.slice(0, DROPDOWN_MAX)
+  const rows  = slice.map((item, i) => {
+    const iconUrl = itemIcon(item.icon)
+    const highlighted = escHighlight(item.name, searchQuery)
+    const [bg, fg, br] = signalColors(item.signal)
+    return `
+      <div class="sd-item" role="option" data-idx="${i}">
+        ${iconUrl
+          ? `<img class="sd-img" src="${iconUrl}" alt="" loading="lazy"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+             <div class="sd-img-ph" style="display:none"></div>`
+          : `<div class="sd-img-ph"></div>`}
+        <span class="sd-name">${highlighted}</span>
+        <span class="sd-badge" style="background:${bg};color:${fg};border:1px solid ${br}">${item.signal}</span>
+        <span class="sd-price">${fmtPrice(item.price)} div</span>
+      </div>`
+  })
+
+  const more = matches.length > DROPDOWN_MAX
+    ? `<div class="sd-footer">${(matches.length - DROPDOWN_MAX).toLocaleString()} more — keep typing to narrow down</div>`
+    : ''
+
+  searchDropdown.innerHTML = rows.join('') + more
+  searchDropdown.classList.add('open')
+  searchInput.classList.add('open')
+  searchInput.setAttribute('aria-expanded', 'true')
+
+  searchDropdown.querySelectorAll('.sd-item').forEach(el => {
+    el.addEventListener('mousedown', e => {
+      e.preventDefault()
+      pickDropdownItem(+el.dataset.idx)
+    })
+    el.addEventListener('mousemove', () => {
+      moveFocus(+el.dataset.idx)
+    })
+  })
+}
+
+function closeDropdown() {
+  dropMatches  = []
+  dropFocusIdx = -1
+  searchDropdown.classList.remove('open')
+  searchDropdown.innerHTML = ''
+  searchInput.classList.remove('open')
+  searchInput.setAttribute('aria-expanded', 'false')
+}
+
+function moveFocus(idx) {
+  dropFocusIdx = idx
+  searchDropdown.querySelectorAll('.sd-item').forEach((el, i) =>
+    el.classList.toggle('focused', i === idx))
+}
+
+function pickDropdownItem(idx) {
+  const item = dropMatches[idx]
+  if (!item) return
+  searchInput.value = item.name
+  searchQuery       = item.name.toLowerCase()
+  searchClear.classList.add('visible')
+  closeDropdown()
+  renderTable()
+  requestAnimationFrame(() => {
+    const first = document.querySelector('#tbody tr.highlight-row, #tbody tr:first-child')
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+  })
+}
+
+searchInput.addEventListener('input', () => {
+  searchQuery = searchInput.value.trim().toLowerCase()
+  searchClear.classList.toggle('visible', searchQuery.length > 0)
+  if (searchQuery && allItems.length) {
+    const matches = allItems.filter(it => it.name.toLowerCase().includes(searchQuery))
+    openDropdown(matches)
+  } else {
+    closeDropdown()
+  }
+  renderTable()
+})
+
+searchInput.addEventListener('keydown', e => {
+  if (!searchDropdown.classList.contains('open')) return
+  const items = searchDropdown.querySelectorAll('.sd-item')
+  if (!items.length) return
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault()
+    moveFocus(Math.min(dropFocusIdx + 1, items.length - 1))
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault()
+    moveFocus(Math.max(dropFocusIdx - 1, -1))
+    if (dropFocusIdx === -1) items.forEach(el => el.classList.remove('focused'))
+  } else if (e.key === 'Enter') {
+    e.preventDefault()
+    if (dropFocusIdx >= 0) pickDropdownItem(dropFocusIdx)
+    else closeDropdown()
+  } else if (e.key === 'Escape') {
+    closeDropdown()
+    searchInput.blur()
+  }
+})
+
+searchInput.addEventListener('blur', () => {
+  setTimeout(closeDropdown, 160)
+})
+
+searchInput.addEventListener('focus', () => {
+  if (searchQuery && dropMatches.length) openDropdown(dropMatches)
+})
+
+searchClear.addEventListener('click', () => {
+  searchInput.value = ''
+  searchQuery       = ''
+  searchClear.classList.remove('visible')
+  closeDropdown()
+  searchInput.focus()
+  renderTable()
+})
+
+// ── Image cache ──────────────────────────────────────────────────────────────
+const imgOkCache  = new Set()
+const imgBadCache = new Set()
 
 function preloadImg(url) {
   if (!url || imgOkCache.has(url) || imgBadCache.has(url)) return
@@ -915,7 +1386,7 @@ function preloadImg(url) {
   im.src = url
 }
 
-// ── Helpers ─────────────────────────────────────────────────────────────────────
+// ── Helpers ──────────────────────────────────────────────────────────────────
 function fmt(v, dec = 2) {
   if (v == null || isNaN(v)) return '—'
   return Number(v).toLocaleString('en', { minimumFractionDigits: dec, maximumFractionDigits: dec })
@@ -924,10 +1395,10 @@ function fmt(v, dec = 2) {
 function fmtPrice(v) {
   if (v == null || isNaN(v)) return '—'
   const n = Number(v)
-  if (n === 0)     return '0'
-  if (n < 0.001)   return n.toFixed(6)
-  if (n < 0.01)    return n.toFixed(4)
-  if (n < 1)       return n.toFixed(3)
+  if (n === 0)   return '0'
+  if (n < 0.001) return n.toFixed(6)
+  if (n < 0.01)  return n.toFixed(4)
+  if (n < 1)     return n.toFixed(3)
   return n.toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 
@@ -953,18 +1424,68 @@ function catIcon(cat) {
   return `${IMG_BASE}/categories/${file}.png`
 }
 
-// Build the poe2db.tw link for an item: base + name with spaces -> underscores.
-// e.g. "Uncut Skill Gem (Level 3)" -> "https://poe2db.tw/us/Uncut_Skill_Gem_(Level_3)"
 function poe2dbUrl(name) {
   if (!name) return POE2DB_BASE
-  return POE2DB_BASE + String(name).trim().replace(/\s+/g, '_')
+  return POE2DB_BASE + String(name).trim().split(' ').join('_')
 }
 
-// ── Tabs ─────────────────────────────────────────────────────────────────────────
+function fmtUtcTs(isoString) {
+  const ts = new Date(isoString)
+  const d = ts.toLocaleDateString('en', { month: 'short', day: 'numeric', timeZone: 'UTC' })
+  const t = ts.toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC', hour12: false })
+  return `Updated ${d} ${t} UTC`
+}
+
+function signalColors(sig) {
+  if (sig === 'BUY')  return ['rgba(34,197,94,.14)',  'var(--buy)',  'rgba(34,197,94,.3)']
+  if (sig === 'SELL') return ['rgba(239,68,68,.14)',  'var(--sell)', 'rgba(239,68,68,.3)']
+  return                     ['rgba(245,158,11,.14)', 'var(--hold)', 'rgba(245,158,11,.3)']
+}
+
+function esc(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+function escHighlight(name, query) {
+  if (!query) return esc(name)
+  const lc  = name.toLowerCase()
+  const idx = lc.indexOf(query.toLowerCase())
+  if (idx === -1) return esc(name)
+  return esc(name.slice(0, idx)) +
+    `<mark>${esc(name.slice(idx, idx + query.length))}</mark>` +
+    esc(name.slice(idx + query.length))
+}
+
+// ── Skeleton ─────────────────────────────────────────────────────────────────
+function renderSkeleton(n = 10) {
+  return Array.from({ length: n }, (_, i) => {
+    const w1 = 90 + (i % 4) * 30
+    const w2 = 40 + (i % 3) * 20
+    return `<tr>
+      <td class="c-img"><div class="skel skel-icon"></div></td>
+      <td class="c-name"><div class="skel skel-text" style="width:${w1}px"></div></td>
+      <td class="c-sig"><div class="skel skel-badge"></div></td>
+      <td class="c-price"><div class="skel skel-text" style="width:${w2 + 20}px"></div></td>
+      <td class="c-vol"><div class="skel skel-text" style="width:${w2}px"></div></td>
+      <td class="c-chg"><div class="skel skel-text" style="width:42px"></div></td>
+      <td class="c-conf">
+        <div class="conf">
+          <div class="cbar"><div class="skel skel-bar"></div></div>
+          <div class="skel skel-text" style="width:32px"></div>
+        </div>
+      </td>
+    </tr>`
+  }).join('')
+}
+
+// ── Categories ───────────────────────────────────────────────────────────────
 async function loadCategories() {
   const tabsEl = document.getElementById('tabs')
 
-  // Always derive categories from item_signals (source of truth after remapping)
   const seen = new Set()
   let offset = 0
   while (true) {
@@ -985,7 +1506,6 @@ async function loadCategories() {
     return
   }
 
-  // Optionally enrich with icons from categories table
   const iconMap = {}
   const { data: catRows } = await sb.from('categories').select('name, icon_url')
   if (catRows?.length) catRows.forEach(r => { if (r.icon_url) iconMap[r.name] = r.icon_url })
@@ -997,15 +1517,16 @@ async function loadCategories() {
     const btn = document.createElement('button')
     btn.className    = 'tab' + (i === 0 ? ' active' : '')
     btn.dataset.name = cat.name
-    const label      = cat.display_name || cat.name
-    const iconSrc    = catIcon(cat)
+    const label   = cat.display_name || cat.name
+    const iconSrc = catIcon(cat)
     preloadImg(iconSrc)
 
     btn.innerHTML = `
       <img class="tab-img" src="${iconSrc}" alt="${label}" loading="lazy"
         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="tab-img-ph"></span>
-      <span>${label}</span>`
+      <span class="tab-label">${label}</span>
+      <span class="tab-count"></span>`
 
     btn.addEventListener('click', () => {
       selectTab(cat)
@@ -1024,14 +1545,20 @@ function selectTab(cat) {
   loadItems(cat)
 }
 
-// ── Load items ────────────────────────────────────────────────────────────────────
+// ── Load items ───────────────────────────────────────────────────────────────
 async function loadItems(cat) {
-  const tbody   = document.getElementById('tbody')
-  const overlay = document.getElementById('tcardOverlay')
-  overlay.classList.add('visible')
-  document.getElementById('tmetaTitle').textContent = `Loading ${cat.display_name || cat.name}…`
+  const tbody = document.getElementById('tbody')
+
+  searchInput.value = ''
+  searchQuery       = ''
+  searchClear.classList.remove('visible')
+  closeDropdown()
+
+  document.getElementById('tmetaTitle').textContent = cat.display_name || cat.name
   document.getElementById('sigFilter').style.display = 'none'
-  document.getElementById('tmetaTs').textContent = ''
+  document.getElementById('tsearch').style.display   = 'none'
+  document.getElementById('tmetaTs').textContent     = ''
+  tbody.innerHTML = renderSkeleton()
 
   const { data, error } = await sb
     .from('item_signals')
@@ -1039,10 +1566,8 @@ async function loadItems(cat) {
     .eq('category', cat.name)
     .order('confidence', { ascending: false })
 
-  overlay.classList.remove('visible')
-
   if (error) {
-    tbody.innerHTML = `<tr class="srow"><td colspan="7">Error: ${error.message}</td></tr>`
+    tbody.innerHTML = `<tr class="srow"><td colspan="7">Error loading data: ${esc(error.message)}</td></tr>`
     return
   }
 
@@ -1050,29 +1575,35 @@ async function loadItems(cat) {
   sortCol  = 'confidence'
   sortAsc  = false
 
-  // Warm the image cache for this batch up front, so rows painted later
-  // (after sort/filter) hit an already-resolved <img> instead of a fresh request.
   allItems.forEach(it => preloadImg(itemIcon(it.icon)))
 
   const label = cat.display_name || cat.name
+  const count = allItems.length
   document.getElementById('tmetaTitle').innerHTML =
-    `<strong>${label}</strong> · ${allItems.length.toLocaleString()} items`
+    `<strong>${label}</strong> <span style="color:var(--text-muted);font-weight:400">· ${count.toLocaleString()} items</span>`
   document.getElementById('sigFilter').style.display = 'flex'
+  document.getElementById('tsearch').style.display   = 'block'
 
   if (allItems.length) {
-    const ts = new Date(allItems[0].updated_at)
-    document.getElementById('tmetaTs').textContent =
-      `Updated ${ts.toLocaleDateString('en', {month:'short',day:'numeric'})} ` +
-      ts.toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'})
+    document.getElementById('tmetaTs').textContent = fmtUtcTs(allItems[0].updated_at)
+  }
+
+  const activeTab = document.querySelector(`.tab[data-name="${CSS.escape(cat.name)}"]`)
+  if (activeTab) {
+    const badge = activeTab.querySelector('.tab-count')
+    if (badge) badge.textContent = count.toLocaleString()
   }
 
   renderTable()
 }
 
-// ── Render ─────────────────────────────────────────────────────────────────────────
+// ── Render ───────────────────────────────────────────────────────────────────
 function renderTable() {
-  const visible = allItems.filter(it => sigFilter.has(it.signal))
-  const sorted  = [...visible].sort((a, b) => {
+  const visible = allItems.filter(it =>
+    sigFilter.has(it.signal) &&
+    (!searchQuery || it.name.toLowerCase().includes(searchQuery))
+  )
+  const sorted = [...visible].sort((a, b) => {
     let va = a[sortCol], vb = b[sortCol]
     if (va == null) va = sortAsc ?  Infinity : -Infinity
     if (vb == null) vb = sortAsc ?  Infinity : -Infinity
@@ -1080,17 +1611,18 @@ function renderTable() {
     return sortAsc ? va - vb : vb - va
   })
 
-  // sort indicators
   document.querySelectorAll('thead th[data-col]').forEach(th => {
     th.classList.remove('sorted', 'asc', 'desc')
     if (th.dataset.col === sortCol)
       th.classList.add('sorted', sortAsc ? 'asc' : 'desc')
   })
 
+  const total = allItems.length
+  const shown = visible.length
   document.getElementById('tfootCount').textContent =
-    visible.length !== allItems.length
-      ? `Showing ${visible.length.toLocaleString()} of ${allItems.length.toLocaleString()}`
-      : `${allItems.length.toLocaleString()} items`
+    shown !== total
+      ? `Showing ${shown.toLocaleString()} of ${total.toLocaleString()} items`
+      : `${total.toLocaleString()} items`
 
   const tbody = document.getElementById('tbody')
   if (!sorted.length) {
@@ -1098,18 +1630,21 @@ function renderTable() {
     return
   }
 
-  tbody.innerHTML = sorted.map(item => {
+  const exactSearch = searchQuery && sorted.length === 1
+
+  tbody.innerHTML = sorted.map((item, rowIdx) => {
     const iconUrl = itemIcon(item.icon)
     const tip     = `B ${pct(item.prob_buy)} · H ${pct(item.prob_hold)} · S ${pct(item.prob_sell)}`
-    const conf    = ((item.confidence || 0) * 100)
+    const conf    = (item.confidence || 0) * 100
     const itemUrl = poe2dbUrl(item.name)
+    const isHighlight = exactSearch || (searchQuery && item.name.toLowerCase() === searchQuery)
 
-    return `<tr>
+    return `<tr${isHighlight ? ' class="highlight-row"' : ''}>
       <td class="c-img">
-        <a class="iimg-link" href="${itemUrl}" target="_blank" rel="noopener" title="View ${esc(item.name)} on poe2db">
+        <a class="iimg-link" href="${itemUrl}" target="_blank" rel="noopener" title="View ${esc(item.name)} on poe2wiki">
           ${iconUrl
             ? `<img class="iimg" src="${iconUrl}" alt="${esc(item.name)}" loading="lazy"
-                 onerror="this.style.display='none';this.nextElementSibling.style.display='block';console.warn('[img fail]',this.src)">`
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='block'">`
             : ''}
           <div class="iimg-ph"${iconUrl ? ' style="display:none"' : ''}></div>
         </a>
@@ -1141,15 +1676,7 @@ function renderTable() {
   }).join('')
 }
 
-function esc(s) {
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-}
-
-// ── Column sort ─────────────────────────────────────────────────────────────────────
+// ── Column sort ──────────────────────────────────────────────────────────────
 document.querySelectorAll('thead th[data-col]').forEach(th => {
   th.addEventListener('click', () => {
     if (sortCol === th.dataset.col) sortAsc = !sortAsc
@@ -1158,7 +1685,8 @@ document.querySelectorAll('thead th[data-col]').forEach(th => {
   })
 })
 
-// ── Boot ─────────────────────────────────────────────────────────────────────────────
+// ── Boot ─────────────────────────────────────────────────────────────────────
+document.getElementById('tfootLeague').textContent = LEAGUE
 loadCategories()
 </script>
 </body>
